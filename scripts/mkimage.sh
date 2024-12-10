@@ -303,6 +303,12 @@ fi
 for ARCH in $req_arch; do
 	APKROOT="$WORKDIR/apkroot-$ARCH"
 	if [ ! -e "$APKROOT" ]; then
+		mkdir -p "$APKROOT/usr/bin"
+		mkdir -p "$APKROOT/usr/lib"
+		ln -s bin "$APKROOT/sbin"
+		ln -s bin "$APKROOT/usr/sbin"
+		ln -s usr/bin "$APKROOT/bin"
+		ln -s usr/lib "$APKROOT/lib"
 		# create root for caching packages
 		mkdir -p "$APKROOT/etc/apk/cache" "$APKROOT"/etc/apk/keys
 		[ -d /usr/share/apk/keys/"$ARCH" ] &&

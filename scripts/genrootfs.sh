@@ -28,6 +28,12 @@ if [ -z "$outfile" ]; then
 	outfile=rootfs-$arch.tar.gz
 fi
 
+mkdir -p "$tmp"/usr/bin
+mkdir -p "$tmp"/usr/lib
+ln -s bin "$tmp"/sbin
+ln -s bin "$tmp"/usr/sbin
+ln -s usr/bin "$tmp"/bin
+ln -s usr/lib "$tmp"/lib
 ${APK:-apk} add --keys-dir "$keys_dir" --no-cache \
 	--repositories-file "$repositories_file" \
 	--no-script --root "$tmp" --initdb --arch "$arch" \
@@ -47,8 +53,7 @@ case $VERSION_ID in
 esac
 
 cat > "$tmp"/etc/apk/repositories <<EOF
-https://dl-cdn.alpinelinux.org/alpine/$branch/main
-https://dl-cdn.alpinelinux.org/alpine/$branch/community
+/home/mike/packages/main
 EOF
 
 tar --numeric-owner --exclude='dev/*' -c -C "$tmp" . | gzip -9n > "$outfile"
