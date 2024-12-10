@@ -96,10 +96,6 @@ package() {
 		etc/profile.d \
 		etc/sysctl.d \
 		home \
-		lib \
-		lib/firmware \
-		lib/modules-load.d \
-		lib/sysctl.d \
 		media \
 		media/cdrom \
 		media/floppy \
@@ -108,19 +104,18 @@ package() {
 		proc \
 		opt \
 		run \
-		sbin \
 		srv \
 		sys \
 		usr \
 		usr/bin \
 		usr/lib \
+		usr/lib/firmware \
 		usr/lib/modules-load.d \
 		usr/lib/sysctl.d \
 		usr/local \
 		usr/local/bin \
 		usr/local/lib \
 		usr/local/share \
-		usr/sbin \
 		usr/share \
 		usr/share/man \
 		usr/share/misc \
@@ -136,6 +131,10 @@ package() {
 		var/spool/cron \
 		var/mail
 
+	ln -s usr/bin bin
+	ln -s usr/sbin sbin
+	ln -s usr/lib lib
+	ln -s bin usr/sbin
 	ln -s ../run var/run
 	ln -s ../run/lock var/lock
 	install -d -m 0555 var/empty

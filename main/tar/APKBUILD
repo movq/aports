@@ -51,10 +51,6 @@ check() {
 
 package() {
 	make DESTDIR="$pkgdir/" install
-
-	mkdir "$pkgdir"/bin
-	mv "$pkgdir"/usr/bin/tar "$pkgdir"/bin/
-	ln -s /bin/tar "$pkgdir"/usr/bin/tar
 }
 
 sha512sums="
