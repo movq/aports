@@ -1,6 +1,6 @@
 # Maintainer: Natanael Copa <ncopa@alpinelinux.org>
 pkgname=abuild
-pkgver=3.14.1.0
+pkgver=3.14.1.1
 _ver=${pkgver%_git*}
 pkgrel=1
 pkgdesc="Script to build Alpine Packages"
@@ -120,6 +120,6 @@ _sudo() {
 }
 
 sha512sums="
-ff9cdf6ae03a3be078efa589546598d12116a082b72807fa2dfc79dc282a92d4c66ff329069e53984e83e3063cdf343cc0147d6128c905d617df756f8f8dcbe0  abuild-3.14.1.0.tar.gz
+bb9573e9c03b76f50c2d08dd373722c7e4a24e81a54ab0164017ba805e4cc50050f5a13479be7c83fe3b5df791ea1ac779c88486419962c9a1d03319edcb8754  abuild-3.14.1.1.tar.gz
 824e936eed3699e8b18ad0c9a2462ea2ec0995111edbb595188b29a2e728b7ec9a4c445fba706d36c9954a6d349bb92b4eff0f20715758051f14065208a9778f  tar-arguments.patch
 "
