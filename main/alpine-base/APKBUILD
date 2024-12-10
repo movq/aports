@@ -28,7 +28,6 @@ package() {
 }
 
 release() {
-	depends="alpine-keys"
 	pkgdesc="Alpine release data"
 
 	mkdir -p "$subpkgdir"/etc
