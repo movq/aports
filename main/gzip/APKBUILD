@@ -38,13 +38,8 @@ package() {
 	rm -rf "$pkgdir"/usr/lib/charset.alias
 	rmdir -p "$pkgdir"/usr/lib 2>/dev/null || true
 
-	mkdir -p "$pkgdir"/bin
-	mv "$pkgdir"/usr/bin/gzip "$pkgdir"/usr/bin/gunzip "$pkgdir"/bin/
-	ln -s /bin/gzip "$pkgdir"/usr/bin/gzip
-	ln -s /bin/gunzip "$pkgdir"/usr/bin/gunzip
-
 	# http://bugs.alpinelinux.org/issues/4011
-	ln -sf /bin/gunzip "$pkgdir"/usr/bin/uncompress
+	ln -sf gunzip "$pkgdir"/usr/bin/uncompress
 }
 
 sha512sums="
