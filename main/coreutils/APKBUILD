@@ -56,23 +56,6 @@ package() {
 	rm -rf "$pkgdir"/usr/lib/charset.alias
 	rmdir -p "$pkgdir"/usr/lib 2>/dev/null || true
 
-	install -d "$pkgdir"/bin "$pkgdir"/usr/sbin
-	cd "$pkgdir"/usr/bin/
-
-	# binaries that busybox puts in /bin
-	local busybox_bin="base64 cat chgrp chmod chown cp date dd df echo false ln ls
-		mkdir mknod mktemp mv nice printenv pwd rm rmdir sleep stat stty sync touch true uname"
-
-	# as these binaries live in /bin on busybox, we want to put them in /bin with coreutils
-	for i in $busybox_bin; do
-		rm "$pkgdir"/usr/bin/$i
-		ln -s ../usr/bin/coreutils "$pkgdir"/bin/$i
-	done
-
-	# chroot lives in /usr/sbin with busybox
-	rm "$pkgdir"/usr/bin/chroot
-	ln -s ../bin/coreutils "$pkgdir"/usr/sbin/chroot
-
 	# resolve conflict between shadow and coreutils for cmd:groups
 	rm "$pkgdir"/usr/bin/groups
 }
