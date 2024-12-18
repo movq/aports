@@ -11,7 +11,6 @@ arch="all"
 makedepends="
 	meson
 	scdoc
-	elogind-dev
 	wayland-dev
 	wayland-protocols
 	"
@@ -26,8 +25,7 @@ options="!check" # no test suite
 
 build() {
 	abuild-meson \
-		-Dlogind=enabled \
-		-Dlogind-provider=elogind \
+		-Dlogind=disabled \
 		. output
 	meson compile -C output
 }

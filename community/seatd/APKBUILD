@@ -11,7 +11,7 @@ arch="all"
 options="suid"  # needed for seatd-launch
 pkggroups="seat"
 install="$pkgname.pre-install $pkgname.post-install $pkgname.post-upgrade"
-makedepends="meson scdoc elogind-dev linux-headers"
+makedepends="meson scdoc linux-headers"
 subpackages="libseat:libs libseat-dev $pkgname-launch $pkgname-doc $pkgname-openrc"
 source="$pkgname-$pkgver.tar.gz::https://git.sr.ht/~kennylevinsen/seatd/archive/$pkgver.tar.gz
 	$pkgname.initd
@@ -30,7 +30,6 @@ build() {
 	fi
 
 	abuild-meson \
-		-Dlibseat-logind=elogind \
 		-Dman-pages=enabled \
 		. output
 
