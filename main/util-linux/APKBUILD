@@ -153,7 +153,7 @@ build() {
 		--disable-kill \
 		--disable-chfn-chsh \
 		--with-vendordir=/usr/lib \
-		--enable-fs-paths-extra=/usr/sbin \
+		--enable-fs-paths-extra=/usr/bin \
 		$_bootstrap_config
 	make
 }
@@ -164,10 +164,6 @@ check() {
 
 package() {
 	make DESTDIR="$pkgdir" install
-
-	# Move to /bin to overwrite busybox's version.
-	mv "$pkgdir"/usr/bin/getopt \
-		"$pkgdir"/usr/bin/rev "$pkgdir"/bin
 
 	# use pkg-config
 	install -D -m755 "$srcdir"/rfkill.initd "$pkgdir"/etc/init.d/rfkill
