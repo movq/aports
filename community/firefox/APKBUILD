@@ -3,7 +3,7 @@
 # Contributor: Rasmus Thomsen <oss@cogitri.dev>
 # Maintainer: Patrycja Rosa <alpine@ptrcnull.me>
 pkgname=firefox
-pkgver=133.0
+pkgver=133.0.3
 _releasedate=2024-11-26
 pkgrel=0
 pkgdesc="Firefox web browser"
@@ -77,6 +77,7 @@ riscv64) ;;
 *) subpackages="$subpackages $pkgname-dbg" ;;
 esac
 source="$pkgname-$pkgver.tar.xz::https://ftp.mozilla.org/pub/firefox/releases/$pkgver/source/firefox-$pkgver.source.tar.xz
+	0029-bmo-1935621-python-3.12.8-mach-fix.patch
 	fix-fortify-system-wrappers.patch
 	fix-rust-target.patch
 	fix-webrtc-glibcisms.patch
@@ -763,7 +764,8 @@ intl() {
 }
 
 sha512sums="
-b16f9898bee4121914caef48d4f7f44bf9d69aee168586b02bf1b4f4197844fd10179e1b63b273f52929fb348030df36328f24993cd666969da4ddc82562a90c  firefox-133.0.tar.xz
+ce48beaa5bb1717d9b6dbfff035b1bb5de1456df14b6a91adfaf3ccfb7ac550ab7ee854546231424a920e01d981825253609fce2ec326c4aa1ca316bbbdb31f8  firefox-133.0.3.tar.xz
+73affa01d049aa3ac0acb6728e4a9421f3af9a7c9a1db7e072ac105c15f7e865cbcd52f64f9bed59b91e4e1f15f4cd5facc71f54e34e08b0321c11eaa24b712c  0029-bmo-1935621-python-3.12.8-mach-fix.patch
 19eea840aa9c1c21e7bd1f832ec078989fe6f08fca40baa271be7e74f1cffeb5ab8d3218a93e664b8d90a41506dede524e2a5174cd47580866109bc6711ea969  fix-fortify-system-wrappers.patch
 cd68b89e29e5f6379fbd5679db27b9a5ef70ea65e51c0d0a8137e1f1fd210e35a8cfb047798e9549bc7275606d7ec5c8d8af1335d29da4699db7acd8bc7ff556  fix-rust-target.patch
 305c874fdea3096e9c4c6aa6520ac64bb1c347c4b59db8360096646593fe684c3b5377874d91cecd33d56d1410b4714fbdea2b514923723ecbeff79d51265d9b  fix-webrtc-glibcisms.patch
