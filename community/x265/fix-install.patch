@@ -1,0 +1,12 @@
+diff --git a/source/CMakeLists.txt b/source/CMakeLists.txt
+index ab5ddfe..0b0ec64 100755
+--- a/source/CMakeLists.txt
++++ b/source/CMakeLists.txt
+@@ -524,6 +524,7 @@ if(POWER)
+ endif()
+ 
+ include(Version) # determine X265_VERSION and X265_LATEST_TAG
++set(X265_LATEST_TAG 1)
+ include_directories(. common encoder "${PROJECT_BINARY_DIR}")
+ 
+ option(ENABLE_PPA "Enable PPA profiling instrumentation" OFF)

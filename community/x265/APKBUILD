@@ -9,7 +9,8 @@ arch="all"
 license="GPL-2.0-or-later"
 makedepends="cmake nasm ninja numactl-dev"
 subpackages="$pkgname-dev $pkgname-libs"
-source="https://bitbucket.org/multicoreware/x265_git/downloads/x265_$pkgver.tar.gz"
+source="https://bitbucket.org/multicoreware/x265_git/downloads/x265_$pkgver.tar.gz
+fix-install.patch"
 builddir="$srcdir/${pkgname}_$pkgver"
 
 build() {
@@ -65,6 +66,7 @@ build() {
 		-DLINKED_10BIT=TRUE \
 		-DLINKED_12BIT=TRUE \
 		-DCMAKE_ASM_NASM_FLAGS=-w-macro-params-legacy \
+                -DX265_LATEST_TAG=1 \
 		$cmake_opts
 
 	cmake --build build
@@ -82,4 +84,5 @@ package() {
 
 sha512sums="
 570429c3f0b560b2f946ac9baba97d66d7d6485e46eb695b17003b5913028f62d35822477633e911cd3ea60e6ce0ecc7d9d82de7d8257272f9ca7b43761438be  x265_3.6.tar.gz
+a9b04f21063891696e97d62c340a946e98f17714a5271f29eca6898e2df9e318d6b8666c6dfc517a21f15ff604304ecf5a4f9ff77ffdda8d6521298ddb5801e7  fix-install.patch
 "
