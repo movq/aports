@@ -12,7 +12,6 @@ license="GPL-2.0-or-later"
 options="suid !check"  # Needs a functioning dbus daemon
 makedepends="
 	duktape-dev
-	elogind-dev
 	expat-dev
 	glib-dev
 	gobject-introspection-dev
@@ -49,9 +48,6 @@ source="https://github.com/polkit-org/polkit/archive/refs/tags/$pkgver/polkit-$p
 build() {
 	msg 'Building without elogind'
 	_build no-elogind -Dsession_tracking="ConsoleKit"
-
-	msg 'Building with elogind'
-	_build elogind -Dsession_tracking="elogind"
 }
 
 _build() {
@@ -129,47 +125,6 @@ dev() {
 		pkgconfig
 		"
 	provides="pc:polkit-agent-1=$pkgver pc:polkit-gobject-1=$pkgver"
-}
-
-elogind() {
-	pkgdesc="Polkit with elogind session tracking"
-	depends="$pkgname-elogind-libs=$pkgver-r$pkgrel $pkgname-common=$pkgver-r$pkgrel"
-	provides="$pkgname=$pkgver-r$pkgrel"
-	provider_priority=10  # lowest
-	replaces="$pkgname"  # for backward compatibility
-
-	cd "$builddir"/elogind/dest
-
-	mkdir -p "$subpkgdir"/usr/lib/polkit-1
-	mv usr/lib/polkit-1/polkitd "$subpkgdir"/usr/lib/polkit-1/
-}
-
-_elogind_dev() {
-	pkgdesc="Polkit with elogind session tracking (development files)"
-	depends="$pkgname-dev=$pkgver-r$pkgrel $pkgname-elogind-libs=$pkgver-r$pkgrel"
-	replaces="$pkgname-dev"
-
-	cd "$builddir"/elogind/dest
-
-	# *.gir files for the default and the elogind variant differ, the rest
-	# is the same.
-	mkdir -p "$subpkgdir"/usr/share
-	mv usr/share/gir-1.0 "$subpkgdir"/usr/share/
-}
-
-_elogind_libs() {
-	pkgdesc="Polkit with elogind session tracking (libraries)"
-	depends=""
-	provides="$pkgname-libs"
-	provider_priority=10  # lowest
-
-	# for backward compatibility/overwrite order
-	replaces="$pkgname-libs $pkgname-noelogind-libs $pkgname-elogind<=0.118"
-
-	cd "$builddir"/elogind/dest
-
-	mkdir -p "$subpkgdir"/usr/lib
-	mv usr/lib/lib*.so.* "$subpkgdir"/usr/lib/
 }
 
 common() {
