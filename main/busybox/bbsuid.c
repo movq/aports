@@ -18,12 +18,12 @@
 #include <unistd.h>
 #include <err.h>
 
-#define BBSUID_PATH "/bin/bbsuid"
+#define BBSUID_PATH "/usr/bin/bbsuid"
 
 const static char * applets[] = {
-	"/bin/mount",
-	"/bin/umount",
-	"/bin/su",
+	"/usr/bin/mount",
+	"/usr/bin/umount",
+	"/usr/bin/su",
 	"/usr/bin/crontab",
 	"/usr/bin/passwd",
 	"/usr/bin/traceroute",
@@ -58,7 +58,7 @@ int exec_busybox(const char *app, int argc, char **argv)
 {
 	char **newargv = malloc((argc + 2) * sizeof(char *));
 	int i;
-	newargv[0] = "/bin/busybox";
+	newargv[0] = "/usr/bin/busybox";
 	newargv[1] = (char *)app;
 	for (i = 1; i < argc; i++)
 		newargv[i+1] = argv[i];

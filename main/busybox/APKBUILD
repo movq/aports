@@ -222,7 +222,7 @@ check() {
 
 package() {
 	local file
-	install -d "$pkgdir"/usr/sbin "$pkgdir"/usr/bin "$pkgdir"/bin "$pkgdir"/sbin
+	install -d "$pkgdir"/usr/bin
 	cd "$srcdir"
 	for file in *.confd ; do
 		install -D -m 0644 $file "$pkgdir"/etc/conf.d/${file%%\.confd}
@@ -232,7 +232,7 @@ package() {
 	done
 
 	cd "$_dyndir"
-	install -Dm755 busybox "$pkgdir"/bin/busybox
+	install -Dm755 busybox "$pkgdir"/usr/bin/busybox
 	install -Dm644 docs/busybox.1 "$pkgdir"/usr/share/man/man1/busybox.1
 
 	#ifupdown needs those dirs to be present
@@ -259,7 +259,7 @@ package() {
 	# building and analyzing Alpine-based images which contain busybox, where
 	# you don't want to run busybox --list-path at analysis or build time.
 	if [ "$CHOST" = "$CBUILD" ]; then
-		"$pkgdir"/bin/busybox --list-path |
+		"$pkgdir"/usr/bin/busybox --list-path |
 			install -Dm644 /dev/stdin "$pkgdir"/etc/busybox-paths.d/busybox
 	fi
 }
@@ -267,13 +267,13 @@ package() {
 extras() {
 	pkgdesc="Additional binaries of Busybox"
 	depends="$pkgname=$pkgver-r$pkgrel"
-	install -Dm755 "$_dyndir_extras"/busybox "$subpkgdir"/bin/busybox-extras
+	install -Dm755 "$_dyndir_extras"/busybox "$subpkgdir"/usr/bin/busybox-extras
 
 	# Install a list of symlinks installed by busybox-extras.  This is useful for
 	# building and analyzing Alpine-based images which contain busybox, where
 	# you don't want to run busybox --list-path at analysis or build time.
 	if [ "$CHOST" = "$CBUILD" ]; then
-		"$subpkgdir"/bin/busybox-extras --list-path |
+		"$subpkgdir"/usr/bin/busybox-extras --list-path |
 			install -Dm644 /dev/stdin "$subpkgdir"/etc/busybox-paths.d/busybox-extras
 	fi
 
@@ -289,14 +289,14 @@ suid() {
 	depends="$pkgname=$pkgver-r$pkgrel"
 
 	cd "$_dyndir"
-	install -Dm4111 bbsuid "$subpkgdir"/bin/bbsuid
+	install -Dm4111 bbsuid "$subpkgdir"/usr/bin/bbsuid
 }
 
 static() {
 	pkgdesc="Statically linked Busybox"
 
 	install -Dm755 "$_staticdir"/busybox.static \
-		"$subpkgdir"/bin/busybox.static
+		"$subpkgdir"/usr/bin/busybox.static
 }
 
 ssl_client() {
@@ -321,9 +321,9 @@ binsh() {
 	provides="/bin/sh"
 	provider_priority=100
 
-	install -d "$subpkgdir"/bin
+	install -d "$subpkgdir"/usr/bin
 
-	ln -s /bin/busybox "$subpkgdir"/bin/sh
+	ln -s busybox "$subpkgdir"/usr/bin/sh
 }
 
 _helper_openrc() {

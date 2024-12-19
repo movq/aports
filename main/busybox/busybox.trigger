@@ -8,8 +8,8 @@ for i in "$@"; do
 			# don't run busybox depmod if we have kmod installed
 			# we dont need to run it twice.
 			target=$(readlink -f "$(command -v depmod || true)")
-			if [ -d "$i" ] && [ "$target" = "/bin/busybox" ]; then
-				/bin/busybox depmod ${i#*/lib/modules/}
+			if [ -d "$i" ] && [ "$target" = "/usr/bin/busybox" ]; then
+				/usr/bin/busybox depmod ${i#*/lib/modules/}
 			fi
 			;;
 		*) do_bb_install=yes;;
@@ -17,7 +17,7 @@ for i in "$@"; do
 done
 
 if [ -n "$do_bb_install" ]; then
-	[ -e /bin/bbsuid ] && /bin/bbsuid --install
-	[ -e /bin/busybox-extras ] && /bin/busybox-extras --install -s
-	/bin/busybox --install -s
+	[ -e /usr/bin/bbsuid ] && /usr/bin/bbsuid --install
+	[ -e /usr/bin/busybox-extras ] && /usr/bin/busybox-extras --install -s
+	/usr/bin/busybox --install -s
 fi
