@@ -31,7 +31,7 @@ build() {
 		--build=$CBUILD \
 		--host=$CHOST \
 		--prefix=/usr \
-		--bindir=/bin \
+		--bindir=/usr/bin \
 		--sysconfdir=/etc \
 		--with-zlib \
 		--with-xz \
@@ -43,10 +43,6 @@ build() {
 package() {
 	make DESTDIR="$pkgdir" install
 	local i
-	mkdir -p "$pkgdir"/sbin
-	for i in lsmod rmmod insmod modinfo modprobe depmod; do
-		ln -sf ../bin/$i "$pkgdir"/sbin/$i
-	done
 }
 
 libs() {
