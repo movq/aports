@@ -1,8 +1,8 @@
 diff --git a/libbb/appletlib.c b/libbb/appletlib.c
-index d9cc48423..686e157de 100644
+index d9cc48423..b47a5da02 100644
 --- a/libbb/appletlib.c
 +++ b/libbb/appletlib.c
-@@ -649,11 +649,10 @@ static void check_suid(int applet_no)
+@@ -649,14 +649,13 @@ static void check_suid(int applet_no)
  
  # if ENABLE_FEATURE_INSTALLER
  static const char usr_bin [] ALIGN1 = "/usr/bin/";
@@ -15,4 +15,8 @@ index d9cc48423..686e157de 100644
 +	usr_bin   /* "/sbin/" */
  #  if !ENABLE_INSTALL_NO_USR
  	,usr_bin
- 	,usr_sbin
+-	,usr_sbin
++	,usr_bin
+ #  endif
+ };
+ 
