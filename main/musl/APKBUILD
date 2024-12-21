@@ -27,6 +27,7 @@ source="https://musl.libc.org/releases/musl-$pkgver.tar.gz
 	loongarch64-add-TLSDESC-support.patch
 	loongarch64-add-fpu-and-simd-context-to-signal.h.patch
 	loongarch64-add-bits-hwcap.h.patch
+	usr-merge.patch
 
 	ldconfig
 	__stack_chk_fail_local.c
@@ -80,6 +81,7 @@ build() {
 		--build=$CBUILD \
 		--host=$CHOST \
 		--prefix=/usr \
+		--syslibdir=/usr/lib \
 		--sysconfdir=/etc \
 		--mandir=/usr/share/man \
 		--infodir=/usr/share/info \
@@ -113,14 +115,14 @@ package() {
 		# make LDSO the be the real file, and libc the symlink
 		local rule="$(printf "%s\n\t%s\n" 'print-ldso:' '@echo $$(basename $(LDSO_PATHNAME))')"
 		local LDSO=$(make -f Makefile --eval "$rule" print-ldso)
-		mv -f "$pkgdir"/usr/lib/libc.so "$pkgdir"/lib/"$LDSO"
-		ln -sf "$LDSO" "$pkgdir"/lib/libc.musl-$CARCH.so.1
-		ln -sf ../../lib/"$LDSO" "$pkgdir"/usr/lib/libc.so
+		mv -f "$pkgdir"/usr/lib/libc.so "$pkgdir"/usr/lib/"$LDSO"
+		ln -sf "$LDSO" "$pkgdir"/usr/lib/libc.musl-$CARCH.so.1
+		ln -sf "$LDSO" "$pkgdir"/usr/lib/libc.so
 		mkdir -p "$pkgdir"/usr/bin
 
 		cat >>"$pkgdir"/usr/bin/ldd <<-EOF
 		#!/bin/sh
-		exec /lib/$LDSO --list "\$@"
+		exec /usr/lib/$LDSO --list "\$@"
 		EOF
 		chmod 755 "$pkgdir"/usr/bin/ldd
 	fi
@@ -135,7 +137,7 @@ utils() {
 	# for backwards compatibility
 	provides="libc-utils=$pkgver-r$pkgrel"
 
-	mkdir -p "$subpkgdir"/usr "$subpkgdir"/sbin
+	mkdir -p "$subpkgdir"/usr
 	mv "$pkgdir"/usr/bin "$subpkgdir"/usr/
 
 	install -D \
@@ -144,7 +146,7 @@ utils() {
 		"$builddir"/iconv \
 		"$subpkgdir"/usr/bin
 
-	install -D -m755 "$srcdir"/ldconfig "$subpkgdir"/sbin
+	install -D -m755 "$srcdir"/ldconfig "$subpkgdir"/usr/bin
 }
 
 # currently we don't want by default any NLS
@@ -173,6 +175,7 @@ b4d95231944fd236827a62343bbce74b20a56739e2b8937bda69bfc7b53f2ce5bd709459ee61615b
 363d0cbfe11f024b120b6d54e909c038cd5b37f1f195048ddb29591191a1288ff50842ccd14e0cab80359e5b46c0e02d2b5af3016bd1507c1d269e590690a3fe  loongarch64-add-TLSDESC-support.patch
 b0f93f8868caf15d436ebe81088f4914cac3e21cc5b86cb0d5f40092edc6e29909188a14cde0c69ab86b51631aa34a4b8136a515f2a1b53c424c8b251c5ea689  loongarch64-add-fpu-and-simd-context-to-signal.h.patch
 70003d89e31b1c83274d1e850f86d8a54f30c1d5e22f769ae229d30d2bbdc095dbf4c262fb55079aaf8bfdf9a213f9468150b50c000b6596b051729a0d25f913  loongarch64-add-bits-hwcap.h.patch
+5f1a784c045a7f02459edd98b0fcefab4f471978f1afddb2e1f9dd4832eaa92277c92d3167d1702e70126dd764359adadee732721c789a3ecc4adf1d1c263372  usr-merge.patch
 8d3a2d5315fc56fee7da9abb8b89bb38c6046c33d154c10d168fb35bfde6b0cf9f13042a3bceee34daf091bc409d699223735dcf19f382eeee1f6be34154f26f  ldconfig
 062bb49fa54839010acd4af113e20f7263dde1c8a2ca359b5fb2661ef9ed9d84a0f7c3bc10c25dcfa10bb3c5a4874588dff636ac43d5dbb3d748d75400756d0b  __stack_chk_fail_local.c
 0d80f37b34a35e3d14b012257c50862dfeb9d2c81139ea2dfa101d981d093b009b9fa450ba27a708ac59377a48626971dfc58e20a3799084a65777a0c32cbc7d  getconf.c

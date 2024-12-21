@@ -1,0 +1,13 @@
+diff --git a/ldso/dynlink.c b/ldso/dynlink.c
+index 324aa859..ca72fe78 100644
+--- a/ldso/dynlink.c
++++ b/ldso/dynlink.c
+@@ -1159,7 +1159,7 @@ static struct dso *load_library(const char *name, struct dso *needed_by)
+ 					sys_path = "";
+ 				}
+ 			}
+-			if (!sys_path) sys_path = "/lib:/usr/local/lib:/usr/lib";
++			if (!sys_path) sys_path = "/usr/lib:/usr/local/lib";
+ 			fd = path_open(name, sys_path, buf, sizeof buf);
+ 		}
+ 		pathname = buf;
