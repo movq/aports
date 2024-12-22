@@ -11,12 +11,11 @@ arch="all"
 license="MIT"
 _depends_tools="
 	py3-libevdev
-	py3-udev
 	py3-yaml
 	python3
 	"
 depends_dev="
-	eudev-dev
+	libudev-zero-dev
 	"
 makedepends="
 	$_depends_tools

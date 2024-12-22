@@ -8,7 +8,6 @@ url="https://gitlab.freedesktop.org/wlroots/wlroots"
 license="MIT"
 arch="all"
 makedepends="
-	eudev-dev
 	glslang-dev
 	hwdata-dev
 	libcap-dev
