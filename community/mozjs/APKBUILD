@@ -35,6 +35,7 @@ subpackages="$pkgname-dev"
 source="https://ftp.mozilla.org/pub/firefox/releases/${pkgver}esr/source/firefox-${pkgver}esr.source.tar.xz
 	fix-rust-target.patch
 	libc-loongarch64-support.patch
+	0029-bmo-1935621-python-3.12.8-mach-fix.patch
 	"
 builddir="$srcdir"/firefox-$pkgver
 
@@ -157,4 +158,5 @@ sha512sums="
 476d71ff45a7178301081191d1b4c47fb21b42618f12191605f95ad48603b84a9150cb5c96f668751a43c8f6a4a43ecf337d38007d8e2b546f006faead2d66d5  firefox-128.5.1esr.source.tar.xz
 cd68b89e29e5f6379fbd5679db27b9a5ef70ea65e51c0d0a8137e1f1fd210e35a8cfb047798e9549bc7275606d7ec5c8d8af1335d29da4699db7acd8bc7ff556  fix-rust-target.patch
 39a1d3de17e9a3fcd8328e677e76eca1fdc6d850f0febbcb88a747c9b3ed0d4dafc4ee9e04de7bbcb3d851b34d9681bedaed954f8651c5f70043683717138a54  libc-loongarch64-support.patch
+73affa01d049aa3ac0acb6728e4a9421f3af9a7c9a1db7e072ac105c15f7e865cbcd52f64f9bed59b91e4e1f15f4cd5facc71f54e34e08b0321c11eaa24b712c  0029-bmo-1935621-python-3.12.8-mach-fix.patch
 "

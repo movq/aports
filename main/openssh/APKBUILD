@@ -11,7 +11,6 @@ url="https://www.openssh.com/portable.html"
 arch="all"
 license="SSH-OpenSSH"
 options="suid"
-depends="openssh-client openssh-sftp-server openssh-server"
 makedepends_build="autoconf automake"
 makedepends_host="
 	linux-headers
