@@ -10,7 +10,7 @@ arch="all"
 license="BSD-3-Clause AND BSD-2-Clause AND ISC"
 depends_dev="
 	$pkgname-libs=$pkgver-r$pkgrel
-	eudev-dev
+	libudev-zero-dev
 	"
 makedepends="
 	$depends_dev

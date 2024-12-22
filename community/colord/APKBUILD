@@ -15,7 +15,7 @@ depends="libcolord=$pkgver-r$pkgrel"
 depends_dev="
 	dbus-dev
 	dconf-dev
-	eudev-dev
+	libudev-zero-dev
 	gobject-introspection-dev
 	libgudev-dev
 	polkit-dev
@@ -52,6 +52,7 @@ build() {
 		-Ddaemon_user=colord \
 		-Dsane=true \
 		-Dvapi=true \
+		-Dudev_rules=false \
 		output .
 
 	meson compile -C output
