@@ -14,7 +14,7 @@ makedepends="$depends_dev
 	asciidoc
 	attr-dev
 	e2fsprogs-dev
-	libudev-zero-dev
+	eudev-dev
 	lzo-dev
 	py3-setuptools
 	py3-sphinx

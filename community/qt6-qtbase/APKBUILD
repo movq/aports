@@ -20,7 +20,7 @@ depends_dev="$_sub
 	cups-dev
 	dbus-dev
 	double-conversion-dev
-	libudev-zero-dev
+	eudev-dev
 	fontconfig-dev
 	freetype-dev
 	glib-dev
