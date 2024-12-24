@@ -12,7 +12,6 @@ license="GPL-3.0-or-later"
 makedepends="
 	bash
 	bash-completion-dev
-	emacs-nox
 	gmime-dev
 	gzip
 	perl
@@ -38,7 +37,6 @@ subpackages="
 	$pkgname-doc
 	$pkgname-dev
 	$pkgname-libs
-	$pkgname-emacs:emacs:noarch
 	$pkgname-vim:vim:noarch
 	$pkgname-zsh-completion
 	$pkgname-bash-completion"
@@ -116,15 +114,6 @@ vim() {
 	pkgdesc="Vim plugins for $pkgname"
 
 	amove usr/share/vim
-}
-
-emacs() {
-	depends="emacs notmuch=$pkgver-r$pkgrel"
-	pkgdesc="Emacs plugins for $pkgname"
-
-	amove usr/share/emacs
-
-	amove usr/bin/notmuch-emacs-mua
 }
 
 py3() {
