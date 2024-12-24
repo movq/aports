@@ -37,7 +37,7 @@ source="$pkgname-$pkgver.tar.gz::https://github.com/pwmt/zathura/archive/refs/ta
 
 case "$CARCH" in
 ppc64le|s390x|riscv64|loongarch64) ;;
-*) makedepends="$makedepends texlive-dev" ;;
+*) makedepends="$makedepends" ;;
 esac
 
 build() {

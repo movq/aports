@@ -12,8 +12,6 @@ depends_dev="$pkgname=$pkgver-r$pkgrel"
 _depends_document_portal="cmd:fusermount3"
 makedepends="
 	$_depends_document_portal
-	flatpak
-	flatpak-dev
 	fontconfig-dev
 	fuse3-dev
 	geoclue-dev

@@ -28,7 +28,7 @@ s390x|armhf)
 	# no gnome shell
 	;;
 *)
-	makedepends="$makedepends gnome-shell"
+	makedepends="$makedepends"
 	;;
 esac
 
