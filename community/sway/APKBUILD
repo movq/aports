@@ -11,6 +11,7 @@ arch="all"
 makedepends="
 	basu-dev
 	cairo-dev
+	eudev-dev
 	gdk-pixbuf-dev
 	json-c-dev
 	libcap-utils
