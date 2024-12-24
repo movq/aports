@@ -15,6 +15,7 @@ provider_priority=20
 subpackages="$pkgname-helper $pkgname-dev"
 source="$pkgname-$pkgver.tar.gz::https://github.com/illiliti/libudev-zero/archive/$pkgver.tar.gz
 	"
+pcprefix="$pkgname:pc:"
 
 build() {
 	make PREFIX=/usr
