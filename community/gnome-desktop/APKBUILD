@@ -9,7 +9,7 @@ arch="all"
 license="GPL-2.0-or-later AND LGPL-2.1-or-later"
 depends_dev="gobject-introspection-dev gsettings-desktop-schemas-dev"
 makedepends="$depends_dev
-	eudev-dev
+	libudev-zero-dev
 	fontconfig-dev
 	gdk-pixbuf-dev
 	glib-dev
