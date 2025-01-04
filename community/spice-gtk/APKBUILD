@@ -38,7 +38,7 @@ makedepends="
 	acl-dev
 	polkit-dev
 	"
-options="suid"
+options="suid setcap"
 subpackages="
 	$pkgname-dev
 	$pkgname-doc
