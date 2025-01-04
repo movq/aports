@@ -26,11 +26,11 @@ replaces="libstdc++ binutils"
 options="!check"
 
 : "${LANG_CXX:=true}"
-: "${LANG_D:=true}"
+: "${LANG_D:=false}"
 : "${LANG_OBJC:=true}"
 : "${LANG_GO:=true}"
 : "${LANG_FORTRAN:=true}"
-: "${LANG_ADA:=true}"
+: "${LANG_ADA:=false}"
 : "${LANG_JIT:=true}"
 
 _libgomp=true
