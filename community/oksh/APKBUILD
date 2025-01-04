@@ -1,8 +1,9 @@
 # Contributor: Matthew T Hoare <matthew.t.hoare@gmail.com>
-# Maintainer: Matthew T Hoare <matthew.t.hoare@gmail.com>
+# Maintainer: Celeste <cielesti@protonmail.com>
+maintainer="Celeste <cielesti@protonmail.com>"
 pkgname=oksh
-pkgver=7.5
-pkgrel=0
+pkgver=7.6
+pkgrel=1
 pkgdesc="Portable OpenBSD ksh, based on the Public Domain KornShell (pdksh)"
 url="https://github.com/ibara/oksh"
 arch="all"
@@ -14,9 +15,7 @@ subpackages="$pkgname-doc"
 source="https://github.com/ibara/oksh/releases/download/oksh-$pkgver/oksh-$pkgver.tar.gz"
 
 build() {
-	./configure \
-		--bindir=/bin \
-		--mandir=/usr/share/man
+	./configure --prefix=/usr
 	make
 }
 
@@ -25,5 +24,5 @@ package() {
 }
 
 sha512sums="
-c794fb5778a342ee340b8399a2085ec6b58bb2732e3779ce042b5117b50bc53fbf93747368c359ebe8cd3bdf39c095797f76381232d9dfa9c1b47fc4d70fd418  oksh-7.5.tar.gz
+78e2d8eb5b1081b3e49b1801f3a6b3bc01480e0fc712d0ae326be24e3784c9fe18369540bdd5050f9dff4236a210f4709b416ae03d397a70e9cc37fe4140618d  oksh-7.6.tar.gz
 "

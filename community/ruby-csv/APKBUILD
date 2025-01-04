@@ -1,7 +1,7 @@
 # Maintainer: Will Sinatra <wpsinatra@gmail.com>
 pkgname=ruby-csv
 _gemname=${pkgname#ruby-}
-pkgver=3.3.0
+pkgver=3.3.2
 pkgrel=0
 pkgdesc="The CSV library provides a complete interface to CSV files and data."
 url="https://rubygems.org/gems/csv"
@@ -44,5 +44,5 @@ package() {
 }
 
 sha512sums="
-676f6c34c1466c0edb412aeba9e955cc0070c201a21e6ffe2fd47a3ad4bd7322d561c612695317e5ef34195bcc8bc7a63f3de8c55fbdcb116890a59b867c20d9  ruby-csv-3.3.0.tar.gz
+58c0b217d13ac15afe2e438c5988301250034888876fe1a1e9027496538b85733a7d103310d216706c371012f09f3661a360b5c32375afb421ebd63ba456fd67  ruby-csv-3.3.2.tar.gz
 "

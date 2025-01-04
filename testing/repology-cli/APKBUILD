@@ -1,33 +1,38 @@
 # Maintainer: Celeste <cielesti@protonmail.com>
 maintainer="Celeste <cielesti@protonmail.com>"
 pkgname=repology-cli
-pkgver=1.3.0
+pkgver=1.7.3
 pkgrel=0
 pkgdesc="Command line interface for Repology.org"
 url="https://github.com/ibara/repology"
 arch="x86_64 aarch64 loongarch64" # ldc
 license="ISC"
-makedepends="ldc"
+# alpine-release: default repo auto-detection uses /etc/os-release
+# libcurl: loaded at runtime
+depends="alpine-release libcurl"
+makedepends="chrpath ldc"
 subpackages="$pkgname-doc"
-source="https://github.com/ibara/repology/releases/download/v$pkgver/repology-$pkgver.tar.gz
-	default-repo-alpine_edge.patch
-	"
+source="https://github.com/ibara/repology/releases/download/v$pkgver/repology-$pkgver.tar.gz"
 builddir="$srcdir/repology-$pkgver"
 
 build() {
-	make DMD=ldmd2
+	./configure
+	make
+
+	chrpath -d ./repology
 }
 
 check() {
-	./repology --version
+	[ "$(./repology --version | awk '{print $1}')" = "$pkgver" ]
 }
 
 package() {
 	install -Dvm755 repology -t "$pkgdir"/usr/bin/
+
 	install -Dvm644 repology.1 -t "$pkgdir"/usr/share/man/man1/
+	install -Dvm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
 }
 
 sha512sums="
-df4f3204512653b2ca15f1ae1d9ff83558b05de63269821fddfc2ff68a70bcbbbce4a3e7365fabfb1a9751f20da4b55c3be282d7e1f16380f9a2eebc336b9024  repology-1.3.0.tar.gz
-cdca2926b91eedbc4cc83f4d4e0e9b0fc4a1e29e108398f2d6cbaa932823aadcbc0023c0044264da10ba3cf0af4718bb3eb9b46a61c8ac3fb93065a37b0ff877  default-repo-alpine_edge.patch
+8f11ab8a1ee39e39bab1347f672c56049c7a91468aea1c830ef8f58f1eb0dcfb50ae51dde7bbcf5136233d87bb22226cbfe01e70b3654a921a75583b650884eb  repology-1.7.3.tar.gz
 "

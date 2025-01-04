@@ -3,12 +3,21 @@
 # Maintainer: Marian Buschsieweke <marian.buschsieweke@posteo.net>
 pkgname=gcc-avr
 pkgver=14.2.0
-pkgrel=0
+pkgrel=1
 pkgdesc="The GNU Compiler Collection for AVR targets"
 url="https://gcc.gnu.org/"
 depends="binutils-avr"
-makedepends="bash linux-headers gmp-dev mpfr-dev mpc1-dev zlib-dev isl-dev"
-arch="x86_64 aarch64 ppc64le x86"
+makedepends="
+	bash
+	gawk
+	gmp-dev
+	isl-dev
+	linux-headers
+	mpc1-dev
+	mpfr-dev
+	zlib-dev
+	"
+arch="all"
 license="GPL-3.0-or-later"
 subpackages="$pkgname-doc"
 source="
@@ -40,6 +49,9 @@ build() {
 		--with-headers=/usr/avr/include \
 		--with-python-dir=share/gcc-avr \
 		--libexecdir=/usr/lib \
+		--infodir=/deleteme/info \
+		--htmldir=/deleteme/html \
+		--pdfdir=/deleteme/pdf \
 		--enable-languages=c,c++ \
 		--disable-__cxa_atexit \
 		--disable-install-libiberty \
@@ -63,6 +75,9 @@ package() {
 	make install DESTDIR="$pkgdir"
 	rm -rf "$pkgdir"/usr/share/man/man7
 	rm -f "$pkgdir"/usr/lib/libcc1.*
+
+	# remove unneeded doc
+	rm -rf "$subpkgdir"/deleteme
 	find "$pkgdir"/usr/lib -type f -name "*.a" -exec /usr/bin/avr-strip --strip-debug '{}' \;
 }
 

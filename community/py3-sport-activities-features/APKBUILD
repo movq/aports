@@ -1,7 +1,7 @@
 # Contributor: Iztok Fister, Jr. <iztok@iztok-jr-fister.eu>
 # Maintainer: Iztok Fister, Jr. <iztok@iztok-jr-fister.eu>
 pkgname=py3-sport-activities-features
-pkgver=0.4.4
+pkgver=0.5.0
 pkgrel=0
 pkgdesc="A minimalistic toolbox for extracting features from sport activity files"
 url="https://github.com/firefly-cpp/sport-activities-features"
@@ -44,5 +44,5 @@ package() {
 }
 
 sha512sums="
-2739eeb453fd1691310c9ee603b50730e91790f61c37c51bf004779781ce9cd532a79c7eca54b978a6488d5ccf8acc3428ebb43287a355b8a02a4e28b7e31991  sport-activities-features-0.4.4.tar.gz
+e57bf54dbc403817a6b313d11151547d876e5ff14e9ec43555430a5daf058c7e736f096520c0e84ec92e0050b188cf3d094ca75a6de725e4c98e6b9a18b41c2f  sport-activities-features-0.5.0.tar.gz
 "

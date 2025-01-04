@@ -1,0 +1,41 @@
+# Contributor: Saijin-Naib <Saijin-Naib_package-maintenance@outlook.com>
+# Maintainer: Saijin-Naib <Saijin-Naib_package-maintenance@outlook.com>
+pkgname=xfce4-smartbookmark-plugin
+pkgver=0.5.3
+pkgrel=0
+pkgdesc="Query search engines from the panel"
+url="https://docs.xfce.org/panel-plugins/xfce4-smartbookmark-plugin/start"
+arch="all"
+license="GPL-2.0-or-later"
+makedepends="
+	gtk+3.0-dev
+	libxfce4ui-dev
+	xfce4-dev-tools
+	xfce4-panel-dev
+	"
+subpackages="$pkgname-lang"
+source="https://archive.xfce.org/src/panel-plugins/xfce4-smartbookmark-plugin/${pkgver%.*}/xfce4-smartbookmark-plugin-$pkgver.tar.bz2"
+builddir="$srcdir/$pkgname-$pkgver/"
+
+build() {
+	./configure \
+		--build=$CBUILD \
+		--host=$CHOST \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--mandir=/usr/share/man \
+		--localstatedir=/var
+	make
+}
+
+check() {
+	make check
+}
+
+package() {
+	make DESTDIR="$pkgdir" install
+}
+
+sha512sums="
+bb88d2ab7c0f4b792eb8fb899f4364dcee379ea90f5a3b64c3c149afc6e7e668a5820bc40003f2fdab51eced864bb3da76e1829080f4d58ae0e38e6d1bb56c0c  xfce4-smartbookmark-plugin-0.5.3.tar.bz2
+"

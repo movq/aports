@@ -1,7 +1,7 @@
 # Contributor: Duncan Bellamy <dunk@denkimushi.com>
 # Maintainer: Duncan Bellamy <dunk@denkimushi.com>
 pkgname=dovecot-fts-xapian
-pkgver=1.8
+pkgver=1.8.3
 pkgrel=0
 pkgdesc="Dovecot xapian fts plugin"
 url="https://github.com/grosjo/fts-xapian"
@@ -34,5 +34,5 @@ package() {
 }
 
 sha512sums="
-178922589ae307afbb465bdac9ba352c1198d4a97a204d190461751d0c117dad22119d964d8dbda2fb5f44a05f069536788a02e816a5822da28c8c96720c4a93  dovecot-fts-xapian-1.8-1.tar.gz
+9dbe62c9aa5571ee621e8d46ba356a0108780f54a143e667bd82b8befa55f2e64112cfd3c5413ab2b3612917f39a1a6a8d9bdcca00fb4437d6c3d3543391496d  dovecot-fts-xapian-1.8.3-1.tar.gz
 "

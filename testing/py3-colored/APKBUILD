@@ -1,0 +1,31 @@
+# Maintainer: Antoine Martin (ayakael) <dev@ayakael.net>
+pkgname=py3-colored
+_pyname=${pkgname/py3-/}
+pkgver=2.2.4
+pkgrel=0
+pkgdesc="Simple Python library for color and formatting in terminal"
+url="https://gitlab.com/dslackw/colored"
+arch="noarch"
+license="MIT"
+depends="python3"
+makedepends="py3-setuptools py3-gpep517 py3-flit"
+checkdepends="py3-pytest"
+subpackages="$pkgname-pyc"
+source="https://gitlab.com/dslackw/colored/-/archive/$pkgver/colored-$pkgver.tar.gz"
+builddir="$srcdir/$_pyname-$pkgver"
+options="!check" # No testsuite
+
+build() {
+	gpep517 build-wheel \
+		--wheel-dir .dist \
+		--output-fd 3 3>&1 >&2
+}
+
+package() {
+	gpep517 install-wheel --destdir "$pkgdir" \
+		.dist/*.whl
+}
+
+sha512sums="
+8fd293c95c2cfa6c3c31a91f946414e5c2581ea12a60e38ad1e6a5e44a85589a81c5e8205c4c518ed0d809840bf1b37b0cb5af4cf48c0706aa52017bf9c04489  colored-2.2.4.tar.gz
+"

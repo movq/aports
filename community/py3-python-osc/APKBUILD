@@ -1,8 +1,8 @@
 # Contributor: Magnus Sandin <magnus.sandin@valitron.se>
 # Maintainer: Magnus Sandin <magnus.sandin@valitron.se>
 pkgname=py3-python-osc
-pkgver=1.9.0
-pkgrel=1
+pkgver=1.9.3
+pkgrel=0
 pkgdesc="Open Sound Control server and client implementations in pure python"
 url="https://github.com/attwad/python-osc"
 arch="noarch"
@@ -37,5 +37,5 @@ package() {
 }
 
 sha512sums="
-5c0b0dbbaf892d05c4e20ad0cb9525ef440f6b8b5aaf8070770e8f97ffb9f126de857e1a79e0b8c1ab64436a07b63cc0b45d7f106b2ddb8456fca23314b3d867  1.9.0-1.9.0.tar.gz
+792fa9cfa6f56b8975174f42718db257b99b586fae1e14f24c5bbf673dbfaafd8374b5fcee060db890f02e990658b49ed3ec8942f863cf4e394a3f214455946f  1.9.3-1.9.3.tar.gz
 "

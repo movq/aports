@@ -1,13 +1,13 @@
 # Contributor: Robin Candau <robincandau@protonmail.com>
 # Maintainer: Robin Candau <robincandau@protonmail.com>
 pkgname=nwg-panel
-pkgver=0.9.53
+pkgver=0.9.59
 pkgrel=0
 pkgdesc="GTK3-based panel for sway and Hyprland Wayland compositors"
 url="https://github.com/nwg-piotr/nwg-panel"
 arch="noarch"
 license="MIT"
-depends="python3 py3-gobject3 py3-i3ipc py3-cairo py3-dasbus py3-netifaces py3-psutil py3-requests bluez-btmgmt brightnessctl"
+depends="python3 py3-gobject3 py3-i3ipc py3-cairo py3-dasbus py3-netifaces py3-psutil py3-requests bluez-btmgmt brightnessctl swaybg"
 makedepends="py3-gpep517 py3-build py3-installer py3-wheel py3-setuptools gtk+3.0-dev libayatana-appindicator-dev gtk-layer-shell-dev glib-dev playerctl-dev"
 subpackages="$pkgname-doc $pkgname-pyc"
 source="$pkgname-$pkgver.tar.gz::https://github.com/nwg-piotr/nwg-panel/archive/v$pkgver.tar.gz"
@@ -29,5 +29,5 @@ package() {
 }
 
 sha512sums="
-d91f2705db98c4af6b517c5ea1fc9a03fcdb4d0b24c5d6a73c1f58e44bdb19235964af939c7c5d32159b26d1b4dd2be6a61616471599907a639416bb1d28181a  nwg-panel-0.9.53.tar.gz
+949c5942206de7123f6a4255a8ad3a7ce244fe5950187c09a548c3a2170290b153075ec222c0304db984d329a5a20eef7f437c2f454b218ce44faf368e1e6b20  nwg-panel-0.9.59.tar.gz
 "

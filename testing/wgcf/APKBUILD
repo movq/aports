@@ -1,7 +1,7 @@
-# Maintainer: Hoang Nguyen <folliekazetani@protonmail.com>
+maintainer="Hoang Nguyen <folliekazetani@protonmail.com>"
 pkgname=wgcf
-pkgver=2.2.22
-pkgrel=3
+pkgver=2.2.24
+pkgrel=0
 pkgdesc="Unofficial CLI for Cloudflare Warp"
 url="https://github.com/ViRb3/wgcf"
 arch="all"
@@ -43,5 +43,5 @@ package() {
 }
 
 sha512sums="
-5be00f5a4caed493fc4443d8c0249398e1025e168d4d14181cee93f008a6251e4f0433d43d37c92f701c3188bd61337a2a60d6338a7ed29afceba413440006b8  wgcf-2.2.22.tar.gz
+0a76759e3f33dc93fe6944a2bb8625a018780c4caafcff55738b5662c29217e6bbd8ae76dbd564649d2f3cc65bd209bc7e9df24481e7ad6d7301acae2b5c1370  wgcf-2.2.24.tar.gz
 "

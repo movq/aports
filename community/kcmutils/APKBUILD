@@ -1,13 +1,12 @@
-# Contributor: Bart Ribbers <bribbers@disroot.org>
-
 # The group tag is just to easily find this APKBUILD by some scripts for automation
 # group=kde-frameworks
 maintainer="team/kde <bribbers@disroot.org>"
 pkgname=kcmutils
-pkgver=6.8.0
+pkgver=6.9.0
 pkgrel=0
 pkgdesc="Utilities for interacting with KCModules"
-arch="all"
+# armhf blocked by qt6-qtdeclarative
+arch="all !armhf"
 url="https://community.kde.org/Frameworks"
 license="LGPL-2.1-only AND LGPL-2.1-or-later"
 depends_dev="
@@ -23,6 +22,7 @@ depends_dev="
 makedepends="$depends_dev
 	doxygen
 	extra-cmake-modules
+	qt6-qtdeclarative-private-dev
 	qt6-qttools-dev
 	samurai
 	"
@@ -48,7 +48,7 @@ build() {
 }
 
 check() {
-	xvfb-run ctest --test-dir build --output-on-failure -E "kcmultidialogtest"
+	xvfb-run ctest --test-dir build -E "kcmultidialogtest"
 }
 
 package() {
@@ -56,5 +56,5 @@ package() {
 }
 
 sha512sums="
-d698e00e38a1bfe96f3953d1d582b6be27b322e1ab9da6839a1544e7c5d6cd3a939ec83c9fd97e9e9f84eceade17123b2009c4f67e2413e32832d7a191b9d902  kcmutils-6.8.0.tar.xz
+e88972a5f553b6401522ecfc0b7b87030600a4ffd8811cd7b8e2f511aa1b6e31846fbf19ab2ace46862cef0d974780f37adcda91793b7d4edfdacd53d176854d  kcmutils-6.9.0.tar.xz
 "

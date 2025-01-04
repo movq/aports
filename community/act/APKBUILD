@@ -1,0 +1,39 @@
+# Contributor: Meng Zhuo <mengzhuo@iscas.ac.cn>
+# Maintainer: Meng Zhuo <mengzhuo@iscas.ac.cn>
+pkgname=act
+pkgver=0.2.71
+pkgrel=0
+pkgdesc="Run your GitHub Actions locally"
+url="https://github.com/nektos/act"
+arch="all"
+license="MIT"
+depends="npm docker"
+makedepends="go"
+options="net"
+
+source="$pkgname-$pkgver.tar.gz::https://github.com/nektos/act/archive/refs/tags/v$pkgver.tar.gz"
+
+export GOCACHE="${GOCACHE:-"$srcdir/go-cache"}"
+export GOTMPDIR="${GOTMPDIR:-"$srcdir/go-tmp"}"
+export GOMODCACHE="${GOMODCACHE:-"$srcdir/go-mod"}"
+
+default_prepare() {
+	mkdir -p $GOTMPDIR
+	go fmt ./...
+}
+
+build() {
+	go build -ldflags "-X main.version=$pkgver" -o act main.go
+}
+
+check() {
+	./act --version
+}
+
+package() {
+	install -Dm755 ./act -t "$pkgdir"/usr/bin/
+}
+
+sha512sums="
+b1079c2a4eb1ac8bc3c3a6f07333c949a79d7ac248b20f1a744b44fd041facd19fccd1a83fb7a02141bc096dbf7a6728c1a17b486e47cb5d3b9ddebda3ef2476  act-0.2.71.tar.gz
+"

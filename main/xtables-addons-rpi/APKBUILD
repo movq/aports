@@ -8,7 +8,7 @@ _ver=3.26
 _rel=0
 # when changing _kver make sure _krel=0 & _rel=0
 _kpkg=linux-$_flavor
-_kver=6.12.1
+_kver=6.12.8
 _krel=0
 
 _kpkgver="$_kver-r$_krel"
@@ -19,7 +19,7 @@ pkgrel=$(( _krel + _rel ))
 
 pkgdesc="Iptables extensions kernel modules"
 url="https://inai.de/projects/xtables-addons/"
-arch="aarch64"
+arch="aarch64 amrv7 armhf"
 license="GPL-2.0-or-later"
 depends="$_kpkg=$_kpkgver"
 makedepends="$_kpkg-dev=$_kpkgver iptables-dev linux-headers"

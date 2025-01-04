@@ -1,34 +1,36 @@
 # Maintainer: Luca Weiss <luca@lucaweiss.eu>
 pkgname=py3-dbusmock
-_pyname=python-dbusmock
-pkgver=0.32.2
+pkgver=0.34.2
 pkgrel=0
 pkgdesc="Mock D-Bus objects for tests"
 url="https://github.com/martinpitt/python-dbusmock"
 arch="noarch"
 license="LGPL-3.0-or-later"
 depends="dbus py3-dbus py3-gobject3"
-makedepends="python3-dev py3-setuptools"
+makedepends="py3-gpep517 py3-setuptools py3-wheel python3-dev"
 checkdepends="bash py3-nose py3-pytest"
-_pypiprefix="${_pyname%${_pyname#?}}"
 subpackages="$pkgname-pyc"
-source="https://files.pythonhosted.org/packages/source/$_pypiprefix/$_pyname/$_pyname-$pkgver.tar.gz"
-builddir="$srcdir/$_pyname-$pkgver"
+source="https://files.pythonhosted.org/packages/source/p/python-dbusmock/python_dbusmock-$pkgver.tar.gz"
+builddir="$srcdir/python_dbusmock-$pkgver"
 
 build() {
-	python3 setup.py build
+	gpep517 build-wheel \
+		--wheel-dir .dist \
+		--output-fd 3 3>&1 >&2
 }
 
 check() {
-	# Skip the fakeroot tests as they can't run under our fakeroot environment
-	# https://github.com/martinpitt/python-dbusmock/issues/46
-	env -u LD_PRELOAD python3 -m unittest
+	python3 -m venv --clear --without-pip --system-site-packages .testenv
+	.testenv/bin/python3 -m installer .dist/*.whl
+	# Skip test requiring upower which would create a circular dependency
+	.testenv/bin/python3 -m pytest -k 'not test_dbusmock_test_template'
 }
 
 package() {
-	python3 setup.py install --skip-build --root="$pkgdir"
+	python3 -m installer -d "$pkgdir" \
+		.dist/*.whl
 }
 
 sha512sums="
-09981dddd49e430093996de78d96293c46867fad7ab24e1badde25cda5f60b05324bd203d5738e8f4315c5744809876ac4afd73aa26bcc6afa05fd631c03ceba  python-dbusmock-0.32.2.tar.gz
+3a4a46afa0ca54004a6891c639c0e1bfd879e575189bdd1bbe031f12333d2358af77456e8b6cb32681010b7c19fb8171f819f67ec8960494408100118b19881d  python_dbusmock-0.34.2.tar.gz
 "

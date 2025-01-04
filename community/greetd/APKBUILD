@@ -2,12 +2,11 @@
 # Maintainer: Sean McAvoy <seanmcavoy@gmail.com>
 pkgname=greetd
 pkgver=0.10.3
-pkgrel=1
+pkgrel=6
 pkgdesc="Minimal and flexible login manager daemon"
 url="https://git.sr.ht/~kennylevinsen/greetd"
-# riscv64: blocked by cargo
 # s390x: no desktop on this arch
-arch="all !s390x !riscv64"
+arch="all !s390x"
 license="GPL-3.0-only"
 depends="/bin/sh"
 makedepends="
@@ -23,6 +22,8 @@ subpackages="
 	$pkgname-doc
 	$pkgname-openrc
 	$pkgname-agreety
+	$pkgname-agreety-config:agreety_config
+	$pkgname-gtkgreet-config:gtkgreet_config
 	$pkgname-fakegreet
 	"
 source="$pkgname-$pkgver.tar.gz::https://git.sr.ht/~kennylevinsen/greetd/archive/$pkgver.tar.gz
@@ -68,9 +69,26 @@ package() {
 
 agreety() {
 	pkgdesc="Simple, text-based greeter"
-	depends="$pkgname=$pkgver-r$pkgrel"
+	depends="$pkgname=$pkgver-r$pkgrel !$pkgname-gtkgreet-config"
 
 	amove usr/bin/agreety
+}
+
+agreety_config() {
+	pkgdesc="$pkgname config for agreety"
+	depends="$pkgname=$pkgver-r$pkgrel cage !$pkgname-gtkgreet-config"
+	install_if="$pkgname=$pkgver-r$pkgrel $pkgname-agreety"
+	amove etc/greetd/config.toml
+}
+
+gtkgreet_config() {
+	pkgdesc="$pkgname config for agreety"
+	depends="$pkgname=$pkgver-r$pkgrel cage seatd pam-rundir !$pkgname-agretty-config"
+	install_if="$pkgname=$pkgver-r$pkgrel $pkgname-gtkgreet"
+	mkdir -p "$subpkgdir"/etc/greetd
+
+	sed 's/command =.*/command = "cage -s -- gtkgreet"/' \
+		"$builddir"/config.toml > "$subpkgdir"/etc/greetd/config.toml
 }
 
 fakegreet() {

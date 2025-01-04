@@ -2,15 +2,23 @@
 
 set -e
 
+abuild_opts="-r"
+if [ "$1" = "-k" ] || [ "$1" = "--keep" ]; then
+	abuild_opts="$abuild_opts -k"
+	shift
+fi
+
 TARGET_ARCH="$1"
 SUDO_APK=abuild-apk
 
+shift
+
 # optional cross build packages
 #: ${KERNEL_PKG=linux-firmware linux-lts}
-#: ${COMPILER_PKG=libffi brotli libev c-ares cunit nghttp2 libidn2 libpsl curl libssh2 libxml2 pax-utils llvm15 community/ghc llvm18 rust community/go}
+#: ${COMPILER_PKG=libffi brotli libev c-ares cunit nghttp2 libidn2 libunistring libpsl curl libssh2 libxml2 pax-utils llvm15 community/ghc llvm19 rust community/go}
 # FIXME: Maybe subdivide into ghc, rust, and go stuff
 : ${MKINITFS=libcap-ng sqlite ncurses util-linux libaio lvm2 popt xz json-c argon2 cryptsetup kmod lddtree mkinitfs}
-#: ${OPENSSH=libedit openssh}
+#: ${OPENSSH=ncurses libedit openssh}
 
 if [ -z "$TARGET_ARCH" ]; then
 	program=$(basename $0)
@@ -40,9 +48,10 @@ EOF
 fi
 
 # get abuild configurables
-[ -e /usr/share/abuild/functions.sh ] || (echo "abuild not found" ; exit 1)
-CBUILDROOT="$(CTARGET=$TARGET_ARCH . /usr/share/abuild/functions.sh ; echo $CBUILDROOT)"
-. /usr/share/abuild/functions.sh
+sharedir=${ABUILD_SHAREDIR:-/usr/share/abuild}
+[ -e "$sharedir"/functions.sh ] || (echo "abuild not found" ; exit 1)
+CBUILDROOT="$(CTARGET=$TARGET_ARCH . "$sharedir"/functions.sh ; echo $CBUILDROOT)"
+. "$sharedir"/functions.sh
 [ -z "$CBUILD_ARCH" ] && die "abuild is too old (use 2.29.0 or later)"
 [ -z "$CBUILDROOT" ] && die "CBUILDROOT not set for $TARGET_ARCH"
 export CBUILD
@@ -81,32 +90,32 @@ fi
 msg "Building cross-compiler"
 
 # Build and install cross binutils (--with-sysroot)
-CTARGET=$TARGET_ARCH BOOTSTRAP=nobase APKBUILD=$(apkbuildname binutils) abuild -r
+CTARGET=$TARGET_ARCH BOOTSTRAP=nobase APKBUILD=$(apkbuildname binutils) abuild $abuild_opts
 
 if ! CHOST=$TARGET_ARCH BOOTSTRAP=nolibc APKBUILD=$(apkbuildname musl) abuild up2date 2>/dev/null; then
 	# C-library headers for target
-	CHOST=$TARGET_ARCH BOOTSTRAP=nocc APKBUILD=$(apkbuildname musl) abuild -r
+	CHOST=$TARGET_ARCH BOOTSTRAP=nocc APKBUILD=$(apkbuildname musl) abuild $abuild_opts
 
 	# Minimal cross GCC
 	EXTRADEPENDS_HOST="musl-dev" \
-	CTARGET=$TARGET_ARCH BOOTSTRAP=nolibc APKBUILD=$(apkbuildname gcc) abuild -r
+	CTARGET=$TARGET_ARCH BOOTSTRAP=nolibc APKBUILD=$(apkbuildname gcc) abuild $abuild_opts
 
 	# Cross build bootstrap C-library for the target
 	EXTRADEPENDS_BUILD="gcc-pass2-$TARGET_ARCH" \
-	CHOST=$TARGET_ARCH BOOTSTRAP=nolibc APKBUILD=$(apkbuildname musl) abuild -r
+	CHOST=$TARGET_ARCH BOOTSTRAP=nolibc APKBUILD=$(apkbuildname musl) abuild $abuild_opts
 fi
 
 # Build libucontext without docs and pkgconfig file as a dependency for gcc-gdc
 EXTRADEPENDS_BUILD="gcc-pass2-$TARGET_ARCH" \
 EXTRADEPENDS_TARGET="musl musl-dev" \
-CHOST=$TARGET_ARCH BOOTSTRAP=nobase APKBUILD=$(apkbuildname libucontext) abuild -r
+CHOST=$TARGET_ARCH BOOTSTRAP=nobase APKBUILD=$(apkbuildname libucontext) abuild $abuild_opts
 
 # Full cross GCC
 EXTRADEPENDS_TARGET="musl musl-dev libucontext-dev" \
-CTARGET=$TARGET_ARCH BOOTSTRAP=nobase APKBUILD=$(apkbuildname gcc) abuild -r
+CTARGET=$TARGET_ARCH BOOTSTRAP=nobase APKBUILD=$(apkbuildname gcc) abuild $abuild_opts
 
 # Cross build-base
-CTARGET=$TARGET_ARCH BOOTSTRAP=nobase APKBUILD=$(apkbuildname build-base) abuild -r
+CTARGET=$TARGET_ARCH BOOTSTRAP=nobase APKBUILD=$(apkbuildname build-base) abuild $abuild_opts
 
 msg "Cross building base system"
 
@@ -123,24 +132,28 @@ if [ "$TARGET_ARCH" = "riscv64" ]; then
 	NEEDS_LIBATOMIC="yes"
 fi
 
-for PKG in fortify-headers linux-headers musl pkgconf zlib \
+if [ $# -eq 0 ]; then
+	set -- fortify-headers linux-headers musl pkgconf zlib \
 	   openssl ca-certificates libmd \
 	   gmp mpfr4 mpc1 isl26 libucontext zstd binutils gcc \
 	   bsd-compat-headers libbsd busybox make \
 	   apk-tools file \
 	   libcap openrc alpine-conf alpine-baselayout alpine-keys alpine-base patch build-base \
-	   acl fakeroot tar \
+	   attr acl fakeroot tar \
 	   lzip abuild \
 	   $OPENSSH \
 	   $MKINITFS \
 	   $COMPILER_PKG \
-	   $KERNEL_PKG ; do
+	   $KERNEL_PKG
+fi
+
+for PKG; do
 
 	if [ "$NEEDS_LIBATOMIC" = "yes" ]; then
 		EXTRADEPENDS_BUILD="libatomic gcc-$TARGET_ARCH g++-$TARGET_ARCH"
 	fi
 	EXTRADEPENDS_TARGET="$EXTRADEPENDS_TARGET"  EXTRADEPENDS_BUILD="$EXTRADEPENDS_BUILD" \
-	CHOST=$TARGET_ARCH BOOTSTRAP=bootimage APKBUILD=$(apkbuildname $PKG) abuild -r
+	CHOST=$TARGET_ARCH BOOTSTRAP=bootimage APKBUILD=$(apkbuildname $PKG) abuild $abuild_opts
 
 	case "$PKG" in
 	fortify-headers)

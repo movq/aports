@@ -36,6 +36,8 @@ options="suid"
 pkggroups="abuild"
 source="https://git.movq.org/mike/abuild/releases/download/$pkgver/abuild-$pkgver.tar.gz
 	tar-arguments.patch
+	0001-abuild-add-option-C-DIR-to-allow-change-directory.patch
+	usr-share-cmake.patch
 	"
 builddir="$srcdir"/abuild-$pkgver
 
@@ -122,4 +124,6 @@ _sudo() {
 sha512sums="
 bb9573e9c03b76f50c2d08dd373722c7e4a24e81a54ab0164017ba805e4cc50050f5a13479be7c83fe3b5df791ea1ac779c88486419962c9a1d03319edcb8754  abuild-3.14.1.1.tar.gz
 824e936eed3699e8b18ad0c9a2462ea2ec0995111edbb595188b29a2e728b7ec9a4c445fba706d36c9954a6d349bb92b4eff0f20715758051f14065208a9778f  tar-arguments.patch
+4b43ed25d97593996b4154ef6f2e4253ddfb1b8cc85fba18c5dd15e01c9ee8fbb8b3db80203455a1120f779615d834e79c600d40e26ee97f64ff56fe28c44d46  0001-abuild-add-option-C-DIR-to-allow-change-directory.patch
+8e5a384c181100df1656c4db2ec429c3861ee6e3a9e0e12951f4e04160e8358ea4332bdfeb5c70f57f578b684e489fdeccbbff067f799430ec422fdc594c0f97  usr-share-cmake.patch
 "

@@ -1,7 +1,7 @@
 # Contributor: Grigory Kirillov <txgk@bk.ru>
 # Maintainer: Simon Rupf <simon@rupf.net>
 pkgname=bzip3
-pkgver=1.4.0
+pkgver=1.5.1
 pkgrel=0
 pkgdesc="Better and stronger spiritual successor to BZip2"
 url="https://github.com/kspalaiologos/bzip3"
@@ -40,5 +40,5 @@ package() {
 }
 
 sha512sums="
-7c663ec411b9945fcd649d908a8ce1d9536cc4acf1712e8393dfe0ed1ad1fbfe9833337bdddd55fd644242e03be424a3200e714423fe27304d1c8d287f1522f5  bzip3-1.4.0.tar.gz
+fc54c43a9ab86b091355b2ad7c1413bc5f07234493240442f0adba992d7ab65b09e2e4108a6ec0cf052078ca1580b99c2788ef18bb89c3777581468c66e52091  bzip3-1.5.1.tar.gz
 "

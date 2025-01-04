@@ -2,15 +2,16 @@
 # Contributor: Timo Teräs <timo.teras@iki.fi>
 # Maintainer: Timo Teräs <timo.teras@iki.fi>
 pkgname=perl-crypt-urandom
-pkgver=0.40
+pkgver=0.45
 pkgrel=0
 #_pkgreal is used by apkbuild-cpan to find modules at MetaCpan
 _pkgreal=Crypt-URandom
 pkgdesc="Provide non blocking randomness"
 url="https://metacpan.org/release/Crypt-URandom/"
-arch="noarch"
+arch="all"
 license="GPL-1.0-or-later OR Artistic-1.0-Perl"
 depends="perl"
+makedepends="perl-dev"
 subpackages="$pkgname-doc"
 source="https://cpan.metacpan.org/authors/id/D/DD/DDICK/Crypt-URandom-$pkgver.tar.gz"
 builddir="$srcdir/$_pkgreal-$pkgver"
@@ -34,5 +35,5 @@ package() {
 }
 
 sha512sums="
-2cf332148f46599388438b4aa8d47ec7da1f8cf5b8b59cc6ca41477b39fc0f0b957a643dc0c539b353c4296775ec0faf2a9bb2217ed71b76a476f68520d4cf0f  Crypt-URandom-0.40.tar.gz
+7560e8a846853c059a1750cde2ff2ea110a316fde8006d4a1b1929271fd5019a1b0fcdaf6ce26af15c875919ce1a40a8f5f596200aeac6810f705619ffa25a8e  Crypt-URandom-0.45.tar.gz
 "

@@ -2,7 +2,7 @@
 # Contributor: fossdd <fossdd@pwned.life>
 # Maintainer: fossdd <fossdd@pwned.life>
 pkgname=vale
-pkgver=3.9.1
+pkgver=3.9.3
 pkgrel=0
 pkgdesc="A markup-aware linter for prose built with speed and extensibility in mind"
 url="https://vale.sh/"
@@ -32,5 +32,5 @@ package() {
 }
 
 sha512sums="
-d50b59e3d267dcb1be315ff55befdfdc3d3cfd5c840994b5f89990fc1e2ee745e6f7359bf444748d878d32ccbe4c662372e885ffa37b2fb6a7733531f8e6414d  vale-3.9.1.tar.gz
+fb53cc2567018ec70b678a71a9c59ac952a5e54aea830376395ef4564043d514dc62da4050fdbb98927afd33a3317e3f8c1683b7f4698abe06f3236221fc23bb  vale-3.9.3.tar.gz
 "

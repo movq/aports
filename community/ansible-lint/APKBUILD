@@ -2,7 +2,7 @@
 # Contributor: fossdd <fossdd@pwned.life>
 # Maintainer: fossdd <fossdd@pwned.life>
 pkgname=ansible-lint
-pkgver=24.10.0
+pkgver=24.12.2
 pkgrel=0
 pkgdesc="check ansible playbooks"
 url="https://github.com/ansible/ansible-lint"
@@ -96,6 +96,6 @@ package() {
 }
 
 sha512sums="
-d43d56d568b2dfd766f344fbd4422482e2ed78393835aad65210fba496ddf9e9189a5d9e4aba6054c5ea76a6709ca747146f5b49d0e792cf622e86523a8a3794  ansible_lint-24.10.0.tar.gz
+0050f5c14165dc4114846096518d500fe2c400f05a6a943d36331042b02f8ae038ede8924a6a036e846eafa03c6bde8e24699b41cef85bcf6d770289f71fc162  ansible_lint-24.12.2.tar.gz
 314fa02e0b30db8a8886824b0cce825ae4ffe227e2c5be434bc96e1c3ab8a6239548574d9ed0869def67b94c684a67abbf594f78aadbc64286fe8187502ba275  no-version-check.patch
 "

@@ -1,4 +1,3 @@
-# Contributor: Natanael Copa <ncopa@alpinelinux.org>
 # Contributor: Sören Tempel <soeren+alpine@soeren-tempel.net>
 # Maintainer: Ariadne Conill <ariadne@dereferenced.org>
 pkgname=gcc
@@ -12,7 +11,7 @@ _pkgsnap="${pkgver##*_git}"
 [ "$CHOST" != "$CTARGET" ] && _target="-$CTARGET_ARCH" || _target=""
 
 pkgname="$pkgname$_target"
-pkgrel=4
+pkgrel=5
 pkgdesc="The GNU Compiler Collection"
 url="https://gcc.gnu.org"
 arch="all"
@@ -298,7 +297,7 @@ build() {
 	i586-*-*-*)		_arch_configure="--with-arch=pentium-m --with-fpmath=sse --with-tune=generic --enable-cld";;
 	s390x-*-*-*)		_arch_configure="--with-arch=z196 --with-tune=zEC12 --with-zarch --with-long-double-128 --enable-decimal-float";;
 	riscv64-*-*-*)		_arch_configure="--with-arch=rv64gc --with-abi=lp64d --enable-autolink-libatomic";;
-	loongarch64-*-*-*)      _arch_configure="--with-arch=loongarch64 --with-abi=lp64d";;
+	loongarch64-*-*-*)      _arch_configure="--with-arch=la64v1.0 --with-abi=lp64d";;
 	esac
 
 	case "$CTARGET_ARCH" in
@@ -453,7 +452,9 @@ package() {
 
 	# move ada runtime libs
 	if $LANG_ADA; then
-		for i in $(find "$pkgdir"/$_gcclibdir/adalib/ -type f -maxdepth 1 \( -name "libgna*.so" -o -name "libgna*.a" \) ); do
+		local libgnat_static=
+		[ "$CHOST" = "$CTARGET" ] && libgnat_static="libgna*.a"
+		for i in $(find "$pkgdir"/$_gcclibdir/adalib/ -type f -maxdepth 1 \( -name "libgna*.so" -o -name "$libgnat_static" \) ); do
 			mv "$i" "$pkgdir"/usr/lib/
 			ln -s ../../../../${i##*/} $i
 		done
@@ -467,8 +468,8 @@ package() {
 		rm -rf "$pkgdir"/usr/lib/libcc1.so*
 
 		# These are moved into packages with arch=$CTARGET_ARCH so remove
-		# cross prefix
-		mv "$pkgdir"/usr/$CTARGET/lib/*.so.* "$pkgdir"/usr/lib/
+		# cross prefix (doesn't exist when BOOTSTRAP=nolibc)
+		[ "$BOOTSTRAP" != nolibc ] && mv "$pkgdir"/usr/$CTARGET/lib/*.so.* "$pkgdir"/usr/lib/
 
 		# fixup gcc library symlinks to be linker scripts so
 		# linker finds the libs from relocated sysroot

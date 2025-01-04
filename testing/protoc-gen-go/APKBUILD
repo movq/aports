@@ -1,6 +1,6 @@
 maintainer="Hoang Nguyen <folliekazetani@protonmail.com>"
 pkgname=protoc-gen-go
-pkgver=1.35.1
+pkgver=1.36.1
 pkgrel=0
 pkgdesc="Protocol Buffers Go generator"
 url="https://github.com/protocolbuffers/protobuf-go"
@@ -31,5 +31,5 @@ package() {
 }
 
 sha512sums="
-562067af648dc2e2477106771f66ae46c03b0f760da364df2307c6709a9490c420d35b41daa181447a40b776156cc2fabc1932df5900a47a515a76c30e8f3078  protoc-gen-go-1.35.1.tar.gz
+9b03a9d1961cd185287d8829a57ea32ff67a2fe3a7408bbbe04bff5c2ff37b96a6136c6ef92a79d821eea4d0cf4697772e08b1f58aa2b99a58745ce5fc454bf3  protoc-gen-go-1.36.1.tar.gz
 "

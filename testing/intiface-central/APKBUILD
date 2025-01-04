@@ -1,7 +1,7 @@
 # Contributor: lauren n. liberda <lauren@selfisekai.rocks>
 maintainer="lauren n. liberda <lauren@selfisekai.rocks>"
 pkgname=intiface-central
-pkgver=2.6.4
+pkgver=2.6.5
 pkgrel=0
 pkgdesc="Frontend application for the Buttplug Sex Toy Control Library"
 url="https://intiface.com/central/"
@@ -87,7 +87,7 @@ package() {
 }
 
 sha512sums="
-719413ce799f96ad5e377feecfaba0955c15eca01872c9fae8fd60b1425e2658815d58bbfc898eb80947c36cea3e42689b332c1ae8b21064ba03f1df335eb726  intiface-central-2.6.4.tar.gz
+af1bd239fbcefe6387e6423c24f1e9443d7f1fa1c21953d5db544431cda7871d4eb99c6c0e9458f8ff9a3d134b826e9a979c6c92f16b251cb2112de199b8c6c4  intiface-central-2.6.5.tar.gz
 ecad3c5cee9c53fc88b539d3088907539aff0b28980a89d4be2acb3c329a7a2154cb12743c0786e5c4a33de78af06b61b5b35f8eee633989cc943dc14e87dba6  system-corrosion.patch
 91014708ab7bb81518ce93db0612209d6479dfa503064d9e9d3186cd5e861165a3f63e286d271d5aac8a1d676868fc3acf51648ac01c16a215062a317ccb6623  system-flutter.patch
 a090ec306117675c555683a836a5368b7165423509439c5d4a75ffcf9a125ab5d7a2598f2c2253f044fc77785276f696b495aece74d4ab8eea9126404966e061  pmos-fit-screen.patch

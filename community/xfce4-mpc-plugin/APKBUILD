@@ -1,0 +1,47 @@
+# Contributor: Saijin-Naib <Saijin-Naib_package-maintenance@outlook.com>
+# Maintainer: Saijin-Naib <Saijin-Naib_package-maintenance@outlook.com>
+pkgname=xfce4-mpc-plugin
+pkgver=0.5.5
+pkgrel=0
+pkgdesc="MPD Client Plugin"
+url="https://docs.xfce.org/panel-plugins/xfce4-mpc-plugin/start"
+arch="all"
+license="ISC"
+makedepends="
+	gtk+3.0-dev
+	libxfce4ui-dev
+	xfce4-dev-tools
+	xfce4-panel-dev
+	"
+subpackages="$pkgname-lang"
+source="$pkgname-$pkgver.tar.gz::https://gitlab.xfce.org/panel-plugins/xfce4-mpc-plugin/-/archive/xfce4-mpc-plugin-$pkgver/xfce4-mpc-plugin-xfce4-mpc-plugin-$pkgver.tar.gz"
+builddir="$srcdir/$pkgname-$pkgname-$pkgver/"
+
+prepare() {
+	default_prepare
+	./autogen.sh
+}
+
+build() {
+	./configure \
+		--build=$CBUILD \
+		--host=$CHOST \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--mandir=/usr/share/man \
+		--localstatedir=/var
+	make
+}
+
+check() {
+	make check
+}
+
+package() {
+	make DESTDIR="$pkgdir" install
+}
+
+
+sha512sums="
+55d7250ad28a97482d1cab213ed7e865a50b0a5b6cf1fd3938751268e01e27f97fdc7f2fa0bb1a71037ab088179df81b26896fba8742bcc3d98bd3d6ba7d8427  xfce4-mpc-plugin-0.5.5.tar.gz
+"

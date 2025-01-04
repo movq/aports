@@ -1,6 +1,6 @@
 # Maintainer: Luca Weiss <luca@lucaweiss.eu>
 pkgname=umockdev
-pkgver=0.18.4
+pkgver=0.19.1
 pkgrel=0
 pkgdesc="Mock hardware devices for creating unit tests and bug reporting"
 arch="all"
@@ -31,5 +31,5 @@ package() {
 }
 
 sha512sums="
-919d6d872901c8929c2dfe5e13e2739fd14e1c284621238b737bfb4527f202a6496ddf523b38d8d1e72aa380e0e948e4b6ff9eea7a5ffd05f84bd8111704e511  umockdev-0.18.4.tar.xz
+3e7c892d0999b6a61f802445851d83bff7c5a2ddc9d0b673bebe2a130b3782d7788082f21bf3c4064e3bbf867c43cde9a583bdd54e2eea467ee430c8b5d4db1c  umockdev-0.19.1.tar.xz
 "

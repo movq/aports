@@ -1,15 +1,15 @@
 maintainer="Hoang Nguyen <folliekazetani@protonmail.com>"
 pkgname=tanka
-pkgver=0.28.4
+pkgver=0.31.1
 pkgrel=0
 pkgdesc="Flexible, reusable and concise configuration for Kubernetes"
 url="https://tanka.dev"
 # blocked by kubectl (kubernetes)
-arch="all !armhf !riscv64 !loongarch64"
+arch="all !armhf !loongarch64"
 license="Apache-2.0"
 depends="kubectl"
 makedepends="go"
-checkdepends="go-jsonnet"
+checkdepends="go-jsonnet helm"
 source="$pkgname-$pkgver.tar.gz::https://github.com/grafana/tanka/archive/refs/tags/v$pkgver.tar.gz"
 options="net" # download Go modules
 
@@ -24,10 +24,7 @@ build() {
 }
 
 check() {
-	# /pkg/helm test requires helm.
-	# Tests timeout with helm installed.
-	# shellcheck disable=2046
-	go test $(go list ./... | grep -v /pkg/helm)
+	go test ./...
 }
 
 package() {
@@ -35,5 +32,5 @@ package() {
 }
 
 sha512sums="
-6a4efec34ad0d6ade1e4cc8b51b121f8c00c4ff729fdb409d5d4a54b6d667b8f0e4b3e21a1a16c6acdad85815293d6cbd601a87d325387a440321004c0e6b5b3  tanka-0.28.4.tar.gz
+f9759a59999c32f35ab0f838ed8eef7ac45504ea82c22b3d0806c9ae2d39c4af472820acf1173ddd15bfa1894a78e9509b9679c362408f53a94d97e46e7c6542  tanka-0.31.1.tar.gz
 "

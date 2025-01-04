@@ -1,6 +1,6 @@
 maintainer="Hoang Nguyen <folliekazetani@protonmail.com>"
 pkgname=gallery-dl
-pkgver=1.28.0
+pkgver=1.28.2
 pkgrel=0
 pkgdesc="CLI tool to download image galleries"
 url="https://github.com/mikf/gallery-dl"
@@ -36,5 +36,5 @@ package() {
 }
 
 sha512sums="
-2e1a49ea4db7ba7576ac62a1518d1bb54110720c53ebda3bb9ef272422d7ccbb742b60dd49cd5d5830cb89d67dce849d355f0972030b27d337577d7e622a0998  gallery-dl-1.28.0.tar.gz
+4a7b7c11f98e333038640f0fc422aa0148a73f2163ff41f2778000499d33eafe2257ae143198b936627272ee281a3f14e458aa977094f24fea5751de68982251  gallery-dl-1.28.2.tar.gz
 "

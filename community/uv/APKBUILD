@@ -1,6 +1,6 @@
 # Maintainer: Andy Postnikov <apostnikov@gmail.com>
 pkgname=uv
-pkgver=0.5.7
+pkgver=0.5.14
 pkgrel=0
 pkgdesc="Extremely fast Python package installer and resolver, written in Rust"
 url="https://github.com/astral-sh/uv"
@@ -66,5 +66,5 @@ py3() {
 }
 
 sha512sums="
-1bfcfd4406df25b8fd14dba65d7fd16a6b7294e848a9fc5c206f7517cabbf480fac36378d6c03be8b06c978a5118acabf7feed432110a53d305ecc3476b39781  uv-0.5.7.tar.gz
+7604791df108feda9ce0a44d915785ca0520b5453c8a49c66881476606e2bf04b3d980d1200a64661decf2fa5580ba84d35bc8e766b273649f9734b5c2bbf20c  uv-0.5.14.tar.gz
 "

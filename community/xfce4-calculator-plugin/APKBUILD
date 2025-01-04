@@ -1,0 +1,36 @@
+# Maintainer: Natanael Copa <ncopa@alpinelinux.org>
+pkgname=xfce4-calculator-plugin
+pkgver=0.7.3
+pkgrel=0
+pkgdesc="Calculator plugin for the Xfce4 panel"
+url="https://gitlab.xfce.org/panel-plugins/xfce4-calculator-plugin"
+arch="all"
+license="GPL-2.0-or-later"
+makedepends="xfce4-panel-dev libxfce4ui-dev"
+subpackages="$pkgname-lang"
+source="https://archive.xfce.org/src/panel-plugins/xfce4-calculator-plugin/${pkgver%.*}/xfce4-calculator-plugin-$pkgver.tar.bz2"
+
+build() {
+	./configure \
+		--build=$CBUILD \
+		--host=$CHOST \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--mandir=/usr/share/man \
+		--infodir=/usr/share/info \
+		--localstatedir=/var \
+		--disable-static
+	make
+}
+
+check() {
+	make check
+}
+
+package() {
+	make DESTDIR="$pkgdir" install
+}
+
+sha512sums="
+f4479cf65e35c1491792d7e74674e41d3e13bf59c73f43fa7b25b83731326ef2627ddfa34a190a799c83a424b3a80760716cb5bcd3fa3dc371a4e42255332dd5  xfce4-calculator-plugin-0.7.3.tar.bz2
+"

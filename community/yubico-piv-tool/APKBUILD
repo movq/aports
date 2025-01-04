@@ -1,7 +1,7 @@
 # Contributor: Christophe BERAUD-DUFOUR <christophe.berauddufour@gmail.com>
 # Maintainer: Will Sinatra <wpsinatra@gmail.com>
 pkgname=yubico-piv-tool
-pkgver=2.6.1
+pkgver=2.7.1
 pkgrel=0
 pkgdesc="PIV Tools for yubikey"
 url="https://developers.yubico.com/yubico-piv-tool"
@@ -29,7 +29,7 @@ build() {
 }
 
 check() {
-	ctest --test-dir build --output-on-failure
+	ctest --test-dir build
 }
 
 package() {
@@ -37,5 +37,5 @@ package() {
 }
 
 sha512sums="
-39c947db1ecbdda3ebd97614d0dbad75c603de5624941c90c4dcfa7d23523766d81d00fed6c7d9bd41f9b3013ebea77aa7b244230dfc76105756b0c493484b38  yubico-piv-tool-2.6.1.tar.gz
+147accafc833207506f92bf9cac0958300c980b3d72d7bc0b1c613a4c442e175ec11f8fa4cf2826095c60492f7b318185a980c944178b5b5699f878bceef9f8b  yubico-piv-tool-2.7.1.tar.gz
 "

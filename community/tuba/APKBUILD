@@ -1,6 +1,6 @@
 # Maintainer: Willow Barraco <contact@willowbarraco.fr>
 pkgname=tuba
-pkgver=0.8.4
+pkgver=0.9.1
 pkgrel=0
 pkgdesc="Browse the Fediverse"
 url="https://tuba.geopjr.dev/"
@@ -37,5 +37,5 @@ package() {
 }
 
 sha512sums="
-8484cdb898174958c1e79ddfd6fab9e74693bca19d1eddde504679d1074cac986580dcf2e2c98fa13ab54fec2a4ffc25b1977bc6e62f1b3a524a6810b2ac268f  tuba-0.8.4.tar.gz
+4c80fb98902359f9f8b59665ea580e477885d5de66e1d5640b67766fde49805702eababed4600b13afd6e8a16b5dbdc9b2391b0c8271eebdef70152c1b60f7a4  tuba-0.9.1.tar.gz
 "

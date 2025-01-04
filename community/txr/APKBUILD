@@ -2,8 +2,8 @@
 # Maintainer: Celeste <cielesti@protonmail.com>
 maintainer="Celeste <cielesti@protonmail.com>"
 pkgname=txr
-pkgver=296
-pkgrel=1
+pkgver=298
+pkgrel=0
 pkgdesc="Programming language for convenient data munging"
 url="https://www.nongnu.org/txr/"
 # s390x: ftbfs (struct jmp in unwind.h not ported)
@@ -12,9 +12,7 @@ arch="all !s390x !riscv64"
 license="BSD-2-Clause"
 makedepends="libffi-dev zlib-dev"
 subpackages="$pkgname-doc $pkgname-vim::noarch"
-source="https://www.kylheku.com/cgit/txr/snapshot/txr-$pkgver.tar.gz
-	fix-loongarch64-warning.patch
-	"
+source="https://www.kylheku.com/cgit/txr/snapshot/txr-$pkgver.tar.gz"
 
 build() {
 	./configure --prefix=/usr
@@ -41,6 +39,9 @@ package() {
 
 	install -Dvm644 LICENSE METALICENSE \
 		-t "$pkgdir"/usr/share/licenses/$pkgname/
+
+	install -Dvm644 ./*.vim \
+		-t "$pkgdir"/usr/share/vim/vimfiles/syntax/
 }
 
 vim() {
@@ -48,11 +49,9 @@ vim() {
 	depends=
 	install_if="$pkgname=$pkgver-r$pkgrel vim"
 
-	install -Dvm644 "$builddir"/*.vim \
-		-t "$subpkgdir"/usr/share/vim/vimfiles/syntax/
+	amove usr/share/vim/vimfiles/syntax
 }
 
 sha512sums="
-ac6e072d578ec114fb0aee9dbbb338e6debe1efee675edd7b3d49777a88ca2847683b30b9a2f3d16e7a7fc79ad80bd8bbc20d5a6b784dd7aad542b70f52a9849  txr-296.tar.gz
-e855227609ae78485b50778ac8aa002f16572a79247faedd9f6c2686bce262d1e37d9e9a38a0f4d5592b9456e9a0e8d30ce20b238131f04849ca5aa71f1eaed1  fix-loongarch64-warning.patch
+19ca6299c74839fe83610164555518c5d12524f536501e95e730181158331d619bde5f6e5f4f95acbd0485852a6ce11862a83f7acf59ba95c6575ca355f0d8d7  txr-298.tar.gz
 "
