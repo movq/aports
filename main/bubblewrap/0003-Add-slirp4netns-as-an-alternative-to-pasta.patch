@@ -1,0 +1,71 @@
+From b57801cfe1224d240ddb64dbe7c74412284172e9 Mon Sep 17 00:00:00 2001
+From: Mike Jones <mike@mjones.io>
+Date: Mon, 30 Dec 2024 16:32:23 +0000
+Subject: [PATCH 3/4] Add slirp4netns as an alternative to pasta
+
+---
+ bubblewrap.c | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
+
+diff --git a/bubblewrap.c b/bubblewrap.c
+index 229fd9b..744e07c 100644
+--- a/bubblewrap.c
++++ b/bubblewrap.c
+@@ -79,6 +79,7 @@ static bool opt_needs_devpts = false;
+ static bool opt_new_session = false;
+ static bool opt_die_with_parent = false;
+ static bool opt_net_pasta = false;
++static bool opt_net_slirp = false;
+ static bool opt_map_uids = false;
+ static uid_t opt_sandbox_uid = -1;
+ static gid_t opt_sandbox_gid = -1;
+@@ -376,6 +377,7 @@ usage (int ecode, FILE *out)
+            "    --size BYTES                 Set size of next argument (only for --tmpfs)\n"
+            "    --chmod OCTAL PATH           Change permissions of PATH (must already exist)\n"
+            "    --net-pasta                  Setup networking using pasta (requires --unshare-net)\n"
++           "    --net-slirp                  Setup networking using slirp4netns (requires --unshare-net)\n"
+            "    --map-uids                   Create custom UID mappings\n"
+           );
+   exit (ecode);
+@@ -2744,6 +2746,11 @@ parse_args_recurse (int          *argcp,
+         {
+           opt_net_pasta = true;
+         }
++      else if (strcmp (arg, "--net-slirp") == 0)
++        {
++          opt_net_slirp = true;
++        }
++
+       else if (strcmp (arg, "--map-uids") == 0)
+         {
+           opt_map_uids = true;
+@@ -3198,17 +3205,20 @@ main (int    argc,
+       if (opt_userns2_fd > 0 && setns (opt_userns2_fd, CLONE_NEWUSER) != 0)
+         die_with_error ("Setting userns2 failed");
+ 
+-      if (opt_net_pasta)
++      if (opt_net_pasta || opt_net_slirp)
+       {
+-        pid_t pasta_pid;
+-        pasta_pid = fork();
+-        if (pasta_pid == -1)
++        pid_t sub_pid;
++        sub_pid = fork();
++        if (sub_pid == -1)
+           exit(1);
+-        if (pasta_pid == 0)
++        if (sub_pid == 0)
+         {
+           unblock_sigchild();
+           const char* pid_str = xasprintf("%d", pid);
+-          execlp("pasta", "pasta", "-q", "-f", "--config-net", "-I", "eth0", "-a", "10.0.0.2", "-g", "10.0.0.1", "-n", "24", "-a", "fd7d:8ed1:bf15:f8b1::2", "-g", "fd7d:8ed1:bf15:f8b1::1", pid_str, NULL);
++          if (opt_net_pasta)
++            execlp("pasta", "pasta", "-q", "-f", "--config-net", "-I", "eth0", "-a", "10.0.0.2", "-g", "10.0.0.1", "-n", "24", "-a", "fd7d:8ed1:bf15:f8b1::2", "-g", "fd7d:8ed1:bf15:f8b1::1", pid_str, NULL);
++          else if (opt_net_slirp)
++            execlp("slirp4netns", "slirp4netns", "--configure", "--mtu=65520", "--disable-host-loopback", "-6", pid_str, "eth0", NULL);
+           exit(0);
+         }
+       }
+-- 
+2.47.1
+

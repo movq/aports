@@ -11,7 +11,11 @@ options="!check" # Testsuite fails
 makedepends="meson libcap-dev docbook-xsl"
 checkdepends="bash"
 subpackages="$pkgname-doc $pkgname-bash-completion $pkgname-zsh-completion"
-source="bubblewrap-$pkgver.tar.gz::https://github.com/containers/bubblewrap/archive/v$pkgver.tar.gz"
+source="bubblewrap-$pkgver.tar.gz::https://github.com/containers/bubblewrap/archive/v$pkgver.tar.gz
+0001-Allow-pasta-networking-with-unshare-net.patch
+0002-Use-newuidmap-newgidmap-possibly-insecure.patch
+0003-Add-slirp4netns-as-an-alternative-to-pasta.patch
+0004-Make-slirp4netns-exit-at-the-end.patch"
 
 # secfixes:
 #   0.10.0-r0:
@@ -34,4 +38,8 @@ package() {
 
 sha512sums="
 3a8aaea0cd588271d42d140914c40ac38c2ee6dedea6f543d51f35894b64b0a3b625e8bd812de02c967f10e7d691528fc918d02d99a74117b095303900cebfb9  bubblewrap-0.11.0.tar.gz
+77236c37b7cf08dfccdd6be82abe64e204bfd21c3968c227ba091d6e5bc2a807c2cf8b45715a925a1345a45d41ca0c2429b27de5fd720be5014d4a573487ce6e  0001-Allow-pasta-networking-with-unshare-net.patch
+a460ab0102b3dc1f13d45e1ce01d51f0afae638b08136f1f341be53fef1c9cc28fd2d05843a70a7306389c64fa6a4176a3269c20cfd4b3ae07eac3ad5d75473c  0002-Use-newuidmap-newgidmap-possibly-insecure.patch
+907a101e1885f79b1267439baaec56f72de1501851f1708edb57e72a2c1b81c3de3a331cffac2fe1b4e89fd9bd48dcad289affb163096fe4ba8f7a4ff49d37f3  0003-Add-slirp4netns-as-an-alternative-to-pasta.patch
+5e9a91c531d789d670b23167f2f821cd123b8e8214eaa1e7a2ba715ec81f1a90651237145efcc0a270dfbb74bb42a90d56dab12093cd990dd288ca64167c24b1  0004-Make-slirp4netns-exit-at-the-end.patch
 "

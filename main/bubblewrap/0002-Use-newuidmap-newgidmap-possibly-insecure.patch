@@ -1,0 +1,104 @@
+From e3bf29172ac22f397b117ec52777a6184d2ba82c Mon Sep 17 00:00:00 2001
+From: Mike Jones <mike@mjones.io>
+Date: Mon, 30 Dec 2024 14:00:50 +0000
+Subject: [PATCH 2/4] Use newuidmap/newgidmap (possibly insecure!)
+
+---
+ bubblewrap.c | 32 +++++++++++++++++++++++++-------
+ 1 file changed, 25 insertions(+), 7 deletions(-)
+
+diff --git a/bubblewrap.c b/bubblewrap.c
+index e297e2a..229fd9b 100644
+--- a/bubblewrap.c
++++ b/bubblewrap.c
+@@ -79,6 +79,7 @@ static bool opt_needs_devpts = false;
+ static bool opt_new_session = false;
+ static bool opt_die_with_parent = false;
+ static bool opt_net_pasta = false;
++static bool opt_map_uids = false;
+ static uid_t opt_sandbox_uid = -1;
+ static gid_t opt_sandbox_gid = -1;
+ static int opt_sync_fd = -1;
+@@ -375,6 +376,7 @@ usage (int ecode, FILE *out)
+            "    --size BYTES                 Set size of next argument (only for --tmpfs)\n"
+            "    --chmod OCTAL PATH           Change permissions of PATH (must already exist)\n"
+            "    --net-pasta                  Setup networking using pasta (requires --unshare-net)\n"
++           "    --map-uids                   Create custom UID mappings\n"
+           );
+   exit (ecode);
+ }
+@@ -2742,6 +2744,10 @@ parse_args_recurse (int          *argcp,
+         {
+           opt_net_pasta = true;
+         }
++      else if (strcmp (arg, "--map-uids") == 0)
++        {
++          opt_map_uids = true;
++        }
+       else if (strcmp (arg, "--") == 0)
+         {
+           argv += 1;
+@@ -2910,10 +2916,6 @@ main (int    argc,
+   /* Get the (optional) privileges we need */
+   acquire_privs ();
+ 
+-  /* Never gain any more privs during exec */
+-  if (prctl (PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0) < 0)
+-    die_with_error ("prctl(PR_SET_NO_NEW_PRIVS) failed");
+-
+   /* The initial code is run with high permissions
+      (i.e. CAP_SYS_ADMIN), so take lots of care. */
+ 
+@@ -3017,6 +3019,7 @@ main (int    argc,
+         opt_unshare_user = true;
+     }
+ 
++
+   if (argc <= 0)
+     usage (EXIT_FAILURE, stderr);
+ 
+@@ -3149,7 +3152,6 @@ main (int    argc,
+   if (pid != 0)
+     {
+       /* Parent, outside sandbox, privileged (initially) */
+-
+       if (intermediate_pids_sockets[0] != -1)
+         {
+           close (intermediate_pids_sockets[1]);
+@@ -3160,7 +3162,23 @@ main (int    argc,
+       /* Discover namespace ids before we drop privileges */
+       namespace_ids_read (pid);
+ 
+-      if (is_privileged && opt_unshare_user && opt_userns_block_fd == -1)
++      if (opt_map_uids && opt_unshare_user && opt_userns_block_fd == -1)
++        {
++          const char* cmd = xasprintf("newuidmap %d 0 100000 1000 1000 1000 1 1001 101000 64536", pid);
++          if (system(cmd) != 0)
++            {
++              die_with_error ("newuidmap failed\n");
++            }
++          cmd = xasprintf("newgidmap %d 0 100000 1000 1000 1000 1 1001 101000 64536", pid);
++          if (system(cmd) != 0)
++            {
++              die_with_error ("newgidmap failed\n");
++            }
++        }
++      if (prctl (PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0) < 0)
++        die_with_error ("prctl(PR_SET_NO_NEW_PRIVS) failed");
++
++      if (is_privileged && !opt_map_uids && opt_unshare_user && opt_userns_block_fd == -1)
+         {
+           /* We're running as euid 0, but the uid we want to map is
+            * not 0. This means we're not allowed to write this from
+@@ -3293,7 +3311,7 @@ main (int    argc,
+ 
+   ns_uid = opt_sandbox_uid;
+   ns_gid = opt_sandbox_gid;
+-  if (!is_privileged && opt_unshare_user && opt_userns_block_fd == -1)
++  if (!is_privileged && !opt_map_uids && opt_unshare_user && opt_userns_block_fd == -1)
+     {
+       /* In the unprivileged case we have to write the uid/gid maps in
+        * the child, because we have no caps in the parent */
+-- 
+2.47.1
+

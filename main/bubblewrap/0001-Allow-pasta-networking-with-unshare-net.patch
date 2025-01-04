@@ -1,0 +1,74 @@
+From b5be8a17c9c727f88630ebd29397f0ad8194933e Mon Sep 17 00:00:00 2001
+From: Mike Jones <mike@mjones.io>
+Date: Mon, 30 Dec 2024 13:17:05 +0000
+Subject: [PATCH 1/4] Allow pasta networking with --unshare-net
+
+---
+ bubblewrap.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
+
+diff --git a/bubblewrap.c b/bubblewrap.c
+index f8728c7..e297e2a 100644
+--- a/bubblewrap.c
++++ b/bubblewrap.c
+@@ -78,6 +78,7 @@ static bool opt_unshare_cgroup_try = false;
+ static bool opt_needs_devpts = false;
+ static bool opt_new_session = false;
+ static bool opt_die_with_parent = false;
++static bool opt_net_pasta = false;
+ static uid_t opt_sandbox_uid = -1;
+ static gid_t opt_sandbox_gid = -1;
+ static int opt_sync_fd = -1;
+@@ -373,6 +374,7 @@ usage (int ecode, FILE *out)
+            "    --perms OCTAL                Set permissions of next argument (--bind-data, --file, etc.)\n"
+            "    --size BYTES                 Set size of next argument (only for --tmpfs)\n"
+            "    --chmod OCTAL PATH           Change permissions of PATH (must already exist)\n"
++           "    --net-pasta                  Setup networking using pasta (requires --unshare-net)\n"
+           );
+   exit (ecode);
+ }
+@@ -2736,6 +2738,10 @@ parse_args_recurse (int          *argcp,
+           argv += 2;
+           argc -= 2;
+         }
++      else if (strcmp (arg, "--net-pasta") == 0)
++        {
++          opt_net_pasta = true;
++        }
+       else if (strcmp (arg, "--") == 0)
+         {
+           argv += 1;
+@@ -3174,6 +3180,21 @@ main (int    argc,
+       if (opt_userns2_fd > 0 && setns (opt_userns2_fd, CLONE_NEWUSER) != 0)
+         die_with_error ("Setting userns2 failed");
+ 
++      if (opt_net_pasta)
++      {
++        pid_t pasta_pid;
++        pasta_pid = fork();
++        if (pasta_pid == -1)
++          exit(1);
++        if (pasta_pid == 0)
++        {
++          unblock_sigchild();
++          const char* pid_str = xasprintf("%d", pid);
++          execlp("pasta", "pasta", "-q", "-f", "--config-net", "-I", "eth0", "-a", "10.0.0.2", "-g", "10.0.0.1", "-n", "24", "-a", "fd7d:8ed1:bf15:f8b1::2", "-g", "fd7d:8ed1:bf15:f8b1::1", pid_str, NULL);
++          exit(0);
++        }
++      }
++
+       /* We don't need any privileges in the launcher, drop them immediately. */
+       drop_privs (false, false);
+ 
+@@ -3267,7 +3288,7 @@ main (int    argc,
+    */
+   switch_to_user_with_privs ();
+ 
+-  if (opt_unshare_net)
++  if (opt_unshare_net && !opt_net_pasta)
+     loopback_setup (); /* Will exit if unsuccessful */
+ 
+   ns_uid = opt_sandbox_uid;
+-- 
+2.47.1
+

@@ -1,0 +1,132 @@
+From b183ea9cc698c628472242b62bc2098c10712058 Mon Sep 17 00:00:00 2001
+From: Mike Jones <mike@mjones.io>
+Date: Mon, 30 Dec 2024 17:28:24 +0000
+Subject: [PATCH 4/4] Make slirp4netns exit at the end
+
+---
+ bubblewrap.c | 37 +++++++++++++++++++++++++++++--------
+ 1 file changed, 29 insertions(+), 8 deletions(-)
+
+diff --git a/bubblewrap.c b/bubblewrap.c
+index 744e07c..658dd7f 100644
+--- a/bubblewrap.c
++++ b/bubblewrap.c
+@@ -471,11 +471,13 @@ dump_info (int fd, const char *output, bool exit_on_error)
+ }
+ 
+ static void
+-report_child_exit_status (int exitc, int setup_finished_fd)
++report_child_exit_status (int exitc, int setup_finished_fd, int slirp_finished_fd)
+ {
+   ssize_t s;
+   char data[2];
+   cleanup_free char *output = NULL;
++  if (slirp_finished_fd != -1)
++    close (slirp_finished_fd);
+   if (opt_json_status_fd == -1 || setup_finished_fd == -1)
+     return;
+ 
+@@ -499,7 +501,7 @@ report_child_exit_status (int exitc, int setup_finished_fd)
+  * pid 1 via a signalfd for SIGCHLD, and exit with an error in this case.
+  * This is to catch e.g. problems during setup. */
+ static int
+-monitor_child (int event_fd, pid_t child_pid, int setup_finished_fd)
++monitor_child (int event_fd, pid_t child_pid, int setup_finished_fd, int slirp_finished_fd)
+ {
+   int res;
+   uint64_t val;
+@@ -509,7 +511,7 @@ monitor_child (int event_fd, pid_t child_pid, int setup_finished_fd)
+   struct pollfd fds[2];
+   int num_fds;
+   struct signalfd_siginfo fdsi;
+-  int dont_close[] = {-1, -1, -1, -1};
++  int dont_close[] = {-1, -1, -1, -1, -1};
+   unsigned int j = 0;
+   int exitc;
+   pid_t died_pid;
+@@ -523,6 +525,8 @@ monitor_child (int event_fd, pid_t child_pid, int setup_finished_fd)
+     dont_close[j++] = opt_json_status_fd;
+   if (setup_finished_fd != -1)
+     dont_close[j++] = setup_finished_fd;
++  if (slirp_finished_fd != -1)
++    dont_close[j++] = slirp_finished_fd;
+   assert (j < sizeof(dont_close)/sizeof(*dont_close));
+   fdwalk (proc_fd, close_extra_fds, dont_close);
+ 
+@@ -561,7 +565,7 @@ monitor_child (int event_fd, pid_t child_pid, int setup_finished_fd)
+           else if (s == 8)
+             {
+               exitc = (int) val - 1;
+-              report_child_exit_status (exitc, setup_finished_fd);
++              report_child_exit_status (exitc, setup_finished_fd, slirp_finished_fd);
+               return exitc;
+             }
+         }
+@@ -582,7 +586,7 @@ monitor_child (int event_fd, pid_t child_pid, int setup_finished_fd)
+           if (died_pid == child_pid)
+             {
+               exitc = propagate_exit_status (died_status);
+-              report_child_exit_status (exitc, setup_finished_fd);
++              report_child_exit_status (exitc, setup_finished_fd, slirp_finished_fd);
+               return exitc;
+             }
+         }
+@@ -2898,6 +2902,7 @@ main (int    argc,
+   int event_fd = -1;
+   int child_wait_fd = -1;
+   int setup_finished_pipe[] = {-1, -1};
++  int slirp_finished_pipe[] = {-1, -1};
+   const char *new_cwd;
+   uid_t ns_uid;
+   gid_t ns_gid;
+@@ -3207,20 +3212,36 @@ main (int    argc,
+ 
+       if (opt_net_pasta || opt_net_slirp)
+       {
++        if (opt_net_slirp)
++            pipe(slirp_finished_pipe);
+         pid_t sub_pid;
+         sub_pid = fork();
+         if (sub_pid == -1)
+           exit(1);
+         if (sub_pid == 0)
+         {
++          if (opt_net_slirp)
++            close(slirp_finished_pipe[1]); // close write-end
++
+           unblock_sigchild();
+           const char* pid_str = xasprintf("%d", pid);
+           if (opt_net_pasta)
+-            execlp("pasta", "pasta", "-q", "-f", "--config-net", "-I", "eth0", "-a", "10.0.0.2", "-g", "10.0.0.1", "-n", "24", "-a", "fd7d:8ed1:bf15:f8b1::2", "-g", "fd7d:8ed1:bf15:f8b1::1", pid_str, NULL);
++            {
++              execlp("pasta", "pasta", "-q", "-f", "--config-net", "-I", "eth0", "-a", "10.0.0.2", "-g", "10.0.0.1", "-n", "24", "-a", "fd7d:8ed1:bf15:f8b1::2", "-g", "fd7d:8ed1:bf15:f8b1::1", pid_str, NULL);
++            }
+           else if (opt_net_slirp)
+-            execlp("slirp4netns", "slirp4netns", "--configure", "--mtu=65520", "--disable-host-loopback", "-6", pid_str, "eth0", NULL);
++            {
++              int new_fd = dup(slirp_finished_pipe[0]);
++              const char* new_fd_str = xasprintf("%d", new_fd);
++              int null_fd = open("/dev/null", O_WRONLY);
++              dup2(null_fd, 1);
++              dup2(null_fd, 2);
++              close(null_fd);
++              execlp("slirp4netns", "slirp4netns", "--exit-fd", new_fd_str, "--configure", "--mtu=65520", "--disable-host-loopback", "-6", pid_str, "eth0", NULL);
++            }
+           exit(0);
+         }
++        close(slirp_finished_pipe[0]); // close read-end
+       }
+ 
+       /* We don't need any privileges in the launcher, drop them immediately. */
+@@ -3258,7 +3279,7 @@ main (int    argc,
+       /* Ignore res, if e.g. the child died and closed child_wait_fd we don't want to error out here */
+       close (child_wait_fd);
+ 
+-      return monitor_child (event_fd, pid, setup_finished_pipe[0]);
++      return monitor_child (event_fd, pid, setup_finished_pipe[0], slirp_finished_pipe[1]);
+     }
+ 
+   if (opt_pidns_fd > 0)
+-- 
+2.47.1
+
