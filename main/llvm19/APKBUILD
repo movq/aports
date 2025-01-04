@@ -100,6 +100,7 @@ prepare() {
 
 	local common_targets="AMDGPU;BPF;WebAssembly"
 	case "$CARCH" in
+		x86_64) _llvm_targets="DLLVM_TARGETS_TO_BUILD=X86;$common_targets";;
 		arm*) _llvm_targets="-DLLVM_TARGETS_TO_BUILD=ARM;$common_targets";;
 		ppc64le) _llvm_targets="-DLLVM_TARGETS_TO_BUILD=PowerPC;$common_targets";;
 	esac
