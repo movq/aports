@@ -49,11 +49,6 @@ if [ -z "$BOOTSTRAP" ] && [ -z "$APORTS_BOOTSTRAP" ]; then
 	subpackages="$subpackages $pkgname-lockd $pkgname-lockd-openrc:lockd_openrc"
 fi
 
-prepare() {
-	default_prepare
-	update_config_sub
-}
-
 build() {
 	# during cross-compilation malloc test goes wrong
 	export ac_cv_func_malloc_0_nonnull=yes

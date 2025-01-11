@@ -21,6 +21,7 @@ makedepends="
 	lua-luv-dev
 	lua5.1-mpack
 	msgpack-c-dev
+	ncurses-dev
 	samurai
 	tree-sitter-dev
 	unibilium-dev

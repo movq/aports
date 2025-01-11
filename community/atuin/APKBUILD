@@ -120,7 +120,7 @@ package() {
 	install -D -m644 "$srcdir"/$pkgname.logrotate "$pkgdir"/etc/logrotate.d/$pkgname
 }
 
-sync() {
+_sync() {
 	pkgdesc="$pkgdesc - client with history sync"
 	provides="$pkgname=$pkgver-r$pkgrel"
 	provider_priority=10  # lowest
